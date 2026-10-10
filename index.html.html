@@ -1,0 +1,2790 @@
+<!doctype html><html><head><meta charset=utf8><meta name=viewport content="width=device-width,initial-scale=1,viewport-fit=cover"><style>:root{color-scheme:light;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}html{scroll-padding-top:env(safe-area-inset-top,0px)}body{margin:0;padding:0;font:14px -apple-system,BlinkMacSystemFont,sans-serif;background:#fff;color:#000}img{max-width:100%}[hidden]:not([hidden=until-found i]){display:none!important}</style></head><body>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Vacation Hub</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,500;9..144,600&family=IBM+Plex+Sans:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --ink: #152238;
+    --ink-deep: #0E1729;
+    --dusk: #2C3D5C;
+    --dusk-line: #3E5178;
+    --sand: #F3EADA;
+    --sand-dim: #C9BFA9;
+    --ember: #E08A3E;
+    --ember-soft: rgba(224, 138, 62, 0.18);
+    --moss: #7DA085;
+    --moss-soft: rgba(125, 160, 133, 0.18);
+    --danger: #E85A3E;
+    --danger-soft: rgba(232, 90, 62, 0.18);
+    --amber: #E8C95A;
+    --amber-soft: rgba(232, 201, 90, 0.18);
+
+    --bg: var(--ink);
+    --bg-deep: var(--ink-deep);
+    --surface: var(--dusk);
+    --surface-line: var(--dusk-line);
+    --text: var(--sand);
+    --text-dim: var(--sand-dim);
+    --accent: var(--ember);
+    --accent-soft: var(--ember-soft);
+    --confirm: var(--moss);
+    --confirm-soft: var(--moss-soft);
+
+    box-sizing: border-box;
+    padding-top: env(safe-area-inset-top, 0px);
+    padding-bottom: env(safe-area-inset-bottom, 0px);
+  }
+
+  * { box-sizing: border-box; }
+  html { scroll-padding-top: env(safe-area-inset-top, 0px); height: 100%; }
+
+  body {
+    height: 100%;
+    margin: 0;
+    background: radial-gradient(ellipse 140% 60% at 50% -10%, #22345A 0%, var(--bg) 55%), var(--bg);
+    color: var(--text);
+    font-family: 'IBM Plex Sans', -apple-system, sans-serif;
+    display: flex;
+    justify-content: center;
+    -webkit-font-smoothing: antialiased;
+  }
+
+  .app {
+    width: 100%;
+    max-width: 460px;
+    min-height: 100vh;
+    padding: 28px 20px 64px;
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+  }
+
+  /* ---- header ---- */
+  .brand {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    color: var(--text-dim);
+    font-size: 13px;
+    letter-spacing: 0.02em;
+  }
+  .brand svg { flex-shrink: 0; opacity: 0.8; }
+  .demo-chip { margin-left: auto; font-size: 9.5px; font-weight: 700; letter-spacing: 0.06em; color: var(--text-dim); border: 1px solid var(--surface-line); padding: 3px 7px; border-radius: 100px; }
+  .demo-note { font-size: 11px; color: var(--text-dim); line-height: 1.5; margin: -12px 0 0; }
+
+  .hero {
+    padding: 22px 22px 24px;
+    border-radius: 22px;
+    background: linear-gradient(165deg, #3A4E6E 0%, #263A5C 100%);
+    border: 1px solid var(--surface-line);
+    position: relative;
+    overflow: hidden;
+  }
+  .hero::after {
+    content: "";
+    position: absolute;
+    right: -30px; bottom: -40px;
+    width: 140px; height: 140px;
+    border-radius: 50%;
+    background: radial-gradient(circle, var(--accent-soft) 0%, transparent 70%);
+    pointer-events: none;
+  }
+  .hero-label { font-size: 12.5px; color: var(--text-dim); margin: 0 0 6px; }
+  .hero-name { font-family: 'Fraunces', serif; font-weight: 500; font-size: 26px; margin: 0 0 4px; letter-spacing: -0.01em; }
+  .hero-dates { font-size: 14.5px; color: var(--text-dim); margin: 0; }
+  .hero-dates strong { color: var(--text); font-weight: 500; }
+  .hero-status {
+    display: inline-flex; align-items: center; gap: 6px;
+    margin-top: 14px; padding: 5px 11px 5px 9px; border-radius: 100px;
+    background: var(--accent-soft); color: var(--accent); font-size: 12.5px; font-weight: 500;
+  }
+  .hero-status.is-back { background: var(--confirm-soft); color: var(--confirm); }
+  .hero-status .dot { width: 6px; height: 6px; border-radius: 50%; background: currentColor; }
+
+  /* ---- tabs ---- */
+  .tabs {
+    display: flex; gap: 4px;
+    background: var(--surface);
+    border: 1px solid var(--surface-line);
+    border-radius: 14px;
+    padding: 4px;
+  }
+  .tab-btn {
+    flex: 1; padding: 10px 4px; border: none; background: transparent;
+    color: var(--text-dim); font-family: 'IBM Plex Sans', sans-serif;
+    font-weight: 500; font-size: 12.5px; border-radius: 10px; cursor: pointer;
+    transition: background 0.2s, color 0.2s;
+  }
+  .tab-btn.active { background: var(--accent); color: var(--ink-deep); }
+  .tab-panel { display: flex; flex-direction: column; gap: 20px; }
+  .tab-panel.hidden { display: none; }
+
+  /* ---- section ---- */
+  .section-title {
+    font-family: 'Fraunces', serif; font-size: 18px; font-weight: 500;
+    margin: 4px 2px 0; display: flex; align-items: baseline; justify-content: space-between;
+  }
+  .section-sub { font-size: 13px; color: var(--text-dim); font-weight: 400; font-family: 'IBM Plex Sans', sans-serif; }
+
+  /* ---- progress ---- */
+  .progress-track { height: 6px; border-radius: 100px; background: rgba(255,255,255,0.08); overflow: hidden; margin: 10px 2px 0; }
+  .progress-fill { height: 100%; border-radius: 100px; background: linear-gradient(90deg, var(--accent), var(--confirm)); width: 0%; transition: width 0.5s cubic-bezier(.4,0,.2,1); }
+
+  /* ---- checklist ---- */
+  .checklist { display: flex; flex-direction: column; gap: 8px; margin-top: 4px; }
+  .check-item {
+    display: flex; align-items: center; gap: 12px; padding: 13px 14px; border-radius: 14px;
+    background: var(--surface); border: 1px solid var(--surface-line); cursor: pointer;
+    user-select: none; transition: background 0.2s, border-color 0.2s;
+  }
+  .check-item:active { transform: scale(0.99); }
+  .check-item.done { background: var(--confirm-soft); border-color: rgba(125,160,133,0.35); }
+  .check-box {
+    width: 21px; height: 21px; border-radius: 7px; border: 1.5px solid var(--text-dim); flex-shrink: 0;
+    display: flex; align-items: center; justify-content: center; transition: background 0.2s, border-color 0.2s;
+  }
+  .check-item.done .check-box { background: var(--confirm); border-color: var(--confirm); }
+  .check-box svg { opacity: 0; transition: opacity 0.15s; width: 13px; height: 13px; }
+  .check-item.done .check-box svg { opacity: 1; }
+  .check-label { font-size: 14.5px; flex: 1; }
+  .check-item.done .check-label { color: var(--text-dim); text-decoration: line-through; text-decoration-color: rgba(243,234,218,0.35); }
+
+  .primary-btn {
+    width: 100%; padding: 14px; border-radius: 14px; border: none;
+    background: var(--accent); color: var(--ink-deep);
+    font-family: 'IBM Plex Sans', sans-serif; font-weight: 600; font-size: 14.5px; cursor: pointer;
+    transition: filter 0.15s, opacity 0.2s;
+  }
+  .primary-btn:disabled { background: rgba(255,255,255,0.08); color: var(--text-dim); cursor: default; }
+  .primary-btn:not(:disabled):active { filter: brightness(0.92); }
+
+  .divider { height: 1px; background: var(--surface-line); margin: 0; border: none; }
+
+  /* ---- forms ---- */
+  .form-card { border-radius: 18px; background: var(--surface); border: 1px solid var(--surface-line); padding: 18px; }
+  .form-card .section-title { margin-top: 0; }
+  .form-hint { font-size: 12.5px; color: var(--text-dim); margin: 2px 2px 14px; }
+  .form-row { display: flex; flex-direction: column; gap: 6px; margin-bottom: 12px; }
+  .form-row:last-child { margin-bottom: 0; }
+  .form-row label { font-size: 12px; color: var(--text-dim); }
+  .form-row input, .form-row select, .form-row textarea {
+    background: var(--bg-deep); border: 1px solid var(--surface-line); border-radius: 10px;
+    padding: 10px 12px; color: var(--text); font-family: 'IBM Plex Sans', sans-serif; font-size: 14px;
+    width: 100%;
+  }
+  .form-row input::placeholder { color: var(--text-dim); }
+  .form-row textarea { resize: vertical; min-height: 60px; }
+  .form-grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+  .cover-confirm { margin-top: 12px; font-size: 13px; color: var(--confirm); display: none; }
+  .cover-confirm.show { display: block; }
+
+  .yn-toggle { display: flex; gap: 8px; }
+  .yn-toggle button {
+    flex: 1; padding: 9px; border-radius: 8px; border: 1px solid var(--surface-line);
+    background: var(--bg-deep); color: var(--text-dim); font-size: 13px; font-family: 'IBM Plex Sans', sans-serif; cursor: pointer;
+  }
+  .yn-toggle button.selected { background: var(--confirm); color: var(--ink-deep); border-color: var(--confirm); }
+
+  /* ---- project mini list ---- */
+  .project-mini {
+    display: flex; align-items: center; justify-content: space-between; gap: 10px;
+    padding: 12px 13px; background: var(--surface); border: 1px solid var(--surface-line);
+    border-radius: 13px; margin-bottom: 8px;
+  }
+  .project-mini:last-child { margin-bottom: 0; }
+  .project-mini .pname { font-size: 13.5px; font-weight: 500; }
+  .project-mini .pcover { font-size: 11.5px; color: var(--text-dim); margin-top: 2px; }
+  .project-mini select {
+    background: var(--bg-deep); border: 1px solid var(--surface-line); border-radius: 8px;
+    color: var(--text); font-size: 11.5px; padding: 6px 7px; font-family: 'IBM Plex Sans', sans-serif; flex-shrink: 0;
+  }
+
+  /* ---- project card (expandable, for documents & links) ---- */
+  .project-card { background: var(--surface); border: 1px solid var(--surface-line); border-radius: 13px; margin-bottom: 8px; overflow: hidden; }
+  .project-card:last-child { margin-bottom: 0; }
+  .project-card-head { display: flex; align-items: center; justify-content: space-between; gap: 10px; padding: 12px 13px; cursor: pointer; user-select: none; }
+  .project-card-head .pname { font-size: 13.5px; font-weight: 500; }
+  .project-card-head .pcover { font-size: 11.5px; color: var(--text-dim); margin-top: 2px; }
+  .project-card-head-right { display: flex; align-items: center; gap: 8px; flex-shrink: 0; }
+  .chevron { width: 16px; height: 16px; color: var(--text-dim); transition: transform 0.2s; flex-shrink: 0; }
+  .project-card.expanded .chevron { transform: rotate(180deg); }
+  .project-card-body { display: none; padding: 0 13px 14px; }
+  .project-card.expanded .project-card-body { display: block; }
+  .handover-question { font-size: 12.5px; color: var(--text-dim); padding-top: 10px; border-top: 1px solid var(--surface-line); margin-bottom: 10px; }
+
+  /* ---- resources (documents & links) ---- */
+  .resources-label { display: flex; align-items: center; gap: 6px; font-size: 12px; color: var(--text-dim); margin: 4px 0 8px; }
+  .resource-item {
+    display: flex; align-items: center; gap: 9px; padding: 9px 11px; border-radius: 10px;
+    background: var(--bg-deep); margin-bottom: 6px; font-size: 12.5px; text-decoration: none; color: var(--text);
+  }
+  .resource-item:last-child { margin-bottom: 0; }
+  .resource-item .r-icon { flex-shrink: 0; font-size: 15px; }
+  .resource-item .r-body { flex: 1; min-width: 0; }
+  .resource-item .r-title { font-weight: 500; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+  .resource-item .r-meta { font-size: 10.5px; color: var(--text-dim); margin-top: 1px; }
+
+  .add-resource-row { display: flex; gap: 8px; margin-top: 8px; }
+  .add-resource-row button {
+    flex: 1; padding: 9px; border-radius: 10px; border: 1px dashed var(--surface-line); background: transparent;
+    color: var(--text-dim); font-size: 12px; font-weight: 500; cursor: pointer; font-family: 'IBM Plex Sans', sans-serif;
+  }
+  .add-resource-row button:active { background: rgba(255,255,255,0.04); }
+
+  .resource-form { margin-top: 10px; padding-top: 10px; border-top: 1px dashed var(--surface-line); display: flex; flex-direction: column; gap: 10px; }
+  .resource-form.hidden { display: none; }
+
+  .task-resources-line { display: flex; align-items: center; gap: 6px; font-size: 12px; color: var(--text-dim); margin-top: 8px; }
+  .resource-panel { margin-top: 10px; padding-top: 10px; border-top: 1px solid var(--surface-line); display: flex; flex-direction: column; gap: 6px; }
+  .resource-panel.hidden { display: none; }
+  .resource-empty { font-size: 12px; color: var(--text-dim); padding: 4px 2px 2px; }
+
+  /* ---- cover header ---- */
+  .cover-header {
+    border-radius: 20px; background: linear-gradient(165deg, #3A4E6E 0%, #263A5C 100%);
+    border: 1px solid var(--surface-line); padding: 18px 20px;
+  }
+  .cover-header .label { font-size: 12px; color: var(--text-dim); }
+  .cover-header .name { font-family: 'Fraunces', serif; font-size: 22px; font-weight: 500; margin: 2px 0; }
+  .cover-header .range { font-size: 13px; color: var(--text-dim); }
+
+  /* ---- status counts ---- */
+  .status-counts { display: grid; grid-template-columns: repeat(4, 1fr); gap: 8px; }
+  .status-count { background: var(--surface); border: 1px solid var(--surface-line); border-radius: 13px; padding: 11px 4px; text-align: center; }
+  .status-count .n { font-family: 'Fraunces', serif; font-size: 19px; }
+  .status-count .l { font-size: 9.5px; color: var(--text-dim); margin-top: 2px; line-height: 1.25; }
+  .status-count.overdue .n { color: var(--danger); }
+  .status-count.due-today .n { color: var(--accent); }
+  .status-count.upcoming .n { color: var(--amber); }
+  .status-count.on-track .n { color: var(--confirm); }
+
+  /* ---- reminder banner ---- */
+  .reminder-banner {
+    background: var(--accent-soft); border: 1px solid rgba(224,138,62,0.4); border-radius: 14px;
+    padding: 13px 14px; display: flex; flex-direction: column; gap: 4px; font-size: 13px; margin-bottom: 10px;
+  }
+  .reminder-banner strong { font-size: 13.5px; display: block; }
+  .reminder-banner .rb-sub { color: var(--text-dim); font-size: 12.5px; }
+  .reminder-banner .rb-btn {
+    align-self: flex-start; margin-top: 6px; padding: 7px 13px; border-radius: 100px; border: none;
+    background: var(--accent); color: var(--ink-deep); font-weight: 600; font-size: 12px; cursor: pointer;
+  }
+
+  /* ---- task cards ---- */
+  .task-card { background: var(--surface); border: 1px solid var(--surface-line); border-radius: 16px; padding: 15px; margin-bottom: 10px; }
+  .task-card:last-child { margin-bottom: 0; }
+  .task-card.overdue { border-color: rgba(232,90,62,0.45); }
+  .task-top { display: flex; justify-content: space-between; align-items: flex-start; gap: 8px; }
+  .task-project { font-size: 11px; color: var(--text-dim); }
+  .task-title { font-size: 14.5px; font-weight: 500; margin-top: 2px; }
+  .badge { font-size: 10px; font-weight: 600; padding: 3px 8px; border-radius: 100px; white-space: nowrap; flex-shrink: 0; }
+  .badge.overdue { background: var(--danger-soft); color: var(--danger); }
+  .badge.due-today { background: var(--accent-soft); color: var(--accent); }
+  .badge.upcoming { background: var(--amber-soft); color: var(--amber); }
+  .badge.on-track { background: var(--confirm-soft); color: var(--confirm); }
+  .task-meta { font-size: 12px; color: var(--text-dim); margin-top: 8px; line-height: 1.5; }
+  .task-meta .last-update { margin-top: 4px; color: var(--text); }
+  .task-actions { display: flex; gap: 6px; margin-top: 12px; }
+  .task-actions button {
+    flex: 1; padding: 9px 4px; border-radius: 10px; font-size: 12px; font-weight: 500; cursor: pointer;
+    border: 1px solid var(--surface-line); background: var(--bg-deep); color: var(--text);
+    font-family: 'IBM Plex Sans', sans-serif; white-space: nowrap;
+  }
+  .task-actions button.primary { background: var(--accent); color: var(--ink-deep); border: none; }
+
+  .update-form { margin-top: 13px; padding-top: 13px; border-top: 1px solid var(--surface-line); display: flex; flex-direction: column; gap: 10px; }
+  .update-form.hidden { display: none; }
+  .decision-fields { display: none; flex-direction: column; gap: 10px; padding-top: 4px; border-top: 1px dashed var(--surface-line); }
+  .decision-fields.show { display: flex; }
+
+  .empty-note { text-align: center; padding: 24px 16px; color: var(--text-dim); font-size: 13px; }
+
+  /* ---- catch me up ---- */
+  .catchup-card { border-radius: 22px; background: var(--surface); border: 1px solid var(--surface-line); padding: 22px; text-align: center; }
+  .catchup-eyebrow { font-family: 'Fraunces', serif; font-size: 19px; font-weight: 500; margin: 0 0 4px; }
+  .catchup-sub { font-size: 13.5px; color: var(--text-dim); margin: 0 0 18px; }
+  .catchup-btn {
+    width: 100%; padding: 15px; border-radius: 14px; border: none;
+    background: linear-gradient(135deg, var(--accent), #C96A28); color: #1a1305;
+    font-family: 'IBM Plex Sans', sans-serif; font-weight: 600; font-size: 15px; cursor: pointer;
+    transition: filter 0.15s, transform 0.15s;
+  }
+  .catchup-btn:active { transform: scale(0.98); }
+
+  .stats-row { display: grid; grid-template-columns: repeat(3, 1fr); gap: 8px; margin-top: 18px; }
+  .stats-row.row2 { grid-template-columns: repeat(2, 1fr); margin-top: 8px; }
+  .stat {
+    padding: 13px 6px; border-radius: 14px; background: var(--bg-deep);
+    opacity: 0; transform: translateY(6px); animation: rise 0.45s ease forwards;
+  }
+  .stat:nth-child(1) { animation-delay: 0.05s; }
+  .stat:nth-child(2) { animation-delay: 0.12s; }
+  .stat:nth-child(3) { animation-delay: 0.19s; }
+  .stat:nth-child(4) { animation-delay: 0.26s; }
+  .stat:nth-child(5) { animation-delay: 0.33s; }
+  @keyframes rise { to { opacity: 1; transform: translateY(0); } }
+  .stat-num { font-family: 'Fraunces', serif; font-size: 22px; font-weight: 500; color: var(--accent); }
+  .stat-label { font-size: 10.5px; color: var(--text-dim); margin-top: 2px; line-height: 1.3; }
+
+  .catchup-section { margin-top: 20px; text-align: left; opacity: 0; transform: translateY(6px); animation: rise 0.45s ease forwards; animation-delay: 0.4s; }
+  .catchup-section h4 { display: flex; align-items: center; gap: 6px; font-size: 13px; margin: 0 0 8px; color: var(--text); font-weight: 500; }
+  .detail-item { display: flex; gap: 10px; padding: 11px 13px; border-radius: 12px; background: var(--bg-deep); margin-bottom: 6px; font-size: 13px; line-height: 1.4; text-align: left; }
+  .detail-item:last-child { margin-bottom: 0; }
+  .detail-item .body { flex: 1; }
+  .detail-item .meta { font-size: 11px; color: var(--text-dim); margin-top: 3px; }
+  .tag { flex-shrink: 0; font-size: 10px; font-weight: 600; padding: 3px 7px; border-radius: 100px; height: fit-content; }
+  .tag.priority { background: var(--danger-soft); color: var(--danger); }
+  .tag.decided { background: var(--confirm-soft); color: var(--confirm); }
+  .tag.moved { background: rgba(255,255,255,0.1); color: var(--text-dim); }
+  .tag.risk { background: var(--danger-soft); color: var(--danger); }
+
+  .toast {
+    position: fixed; bottom: 24px; left: 50%; transform: translateX(-50%) translateY(10px);
+    background: var(--confirm); color: var(--ink-deep); padding: 11px 18px; border-radius: 100px;
+    font-size: 13px; font-weight: 500; opacity: 0; pointer-events: none; transition: opacity 0.25s, transform 0.25s;
+    z-index: 50; white-space: nowrap;
+  }
+  .toast.show { opacity: 1; transform: translateX(-50%) translateY(0); }
+
+  /* ---- voice input ---- */
+  .voice-btn {
+    display: inline-flex; align-items: center; justify-content: center; gap: 7px;
+    padding: 10px 16px; border-radius: 100px; border: 1px solid var(--accent);
+    background: var(--accent-soft); color: var(--accent); font-family: 'IBM Plex Sans', sans-serif;
+    font-weight: 600; font-size: 13px; cursor: pointer;
+  }
+  .voice-btn:active { filter: brightness(1.1); }
+  .voice-btn.block { width: 100%; padding: 13px; }
+  .voice-btn-inline {
+    display: inline-flex; align-items: center; justify-content: center;
+    width: 32px; height: 32px; border-radius: 8px; border: 1px solid var(--surface-line);
+    background: var(--bg-deep); color: var(--text-dim); font-size: 14px; cursor: pointer; flex-shrink: 0;
+  }
+  .voice-btn-inline.recording { background: var(--danger-soft); color: var(--danger); border-color: rgba(232,90,62,0.4); animation: mic-pulse 1.2s ease-in-out infinite; }
+  .textarea-with-mic { display: flex; gap: 6px; align-items: flex-start; }
+  .textarea-with-mic textarea { flex: 1; }
+  @keyframes mic-pulse { 0%, 100% { opacity: 1; } 50% { opacity: 0.5; } }
+
+  .voice-overlay {
+    position: fixed; inset: 0; background: rgba(10,15,26,0.72);
+    display: flex; align-items: flex-end; justify-content: center; z-index: 100;
+  }
+  .voice-overlay.hidden { display: none; }
+  .voice-sheet {
+    width: 100%; max-width: 460px; background: var(--surface); border: 1px solid var(--surface-line);
+    border-top-left-radius: 24px; border-top-right-radius: 24px;
+    padding: 22px 20px calc(24px + env(safe-area-inset-bottom, 0px));
+    max-height: 86vh; overflow-y: auto;
+  }
+  .voice-sheet h3 { font-family: 'Fraunces', serif; font-size: 18px; font-weight: 500; margin: 0 0 4px; }
+  .voice-sub { font-size: 12.5px; color: var(--text-dim); margin: 0 0 16px; }
+
+  .mic-circle {
+    width: 72px; height: 72px; border-radius: 50%; background: var(--accent-soft); color: var(--accent);
+    display: flex; align-items: center; justify-content: center; font-size: 30px; margin: 8px auto 16px;
+  }
+  .mic-circle.listening { animation: mic-ring 1.4s ease-in-out infinite; }
+  @keyframes mic-ring {
+    0% { box-shadow: 0 0 0 0 var(--accent-soft); }
+    70% { box-shadow: 0 0 0 16px rgba(224,138,62,0); }
+    100% { box-shadow: 0 0 0 0 rgba(224,138,62,0); }
+  }
+  .voice-status-text { text-align: center; font-size: 14px; color: var(--text-dim); margin-bottom: 16px; }
+  .voice-fallback textarea { min-height: 84px; }
+
+  .voice-review-field { margin-bottom: 12px; }
+  .voice-review-field label { font-size: 11.5px; color: var(--text-dim); display: block; margin-bottom: 5px; }
+  .voice-review-field input, .voice-review-field textarea, .voice-review-field select {
+    width: 100%; background: var(--bg-deep); border: 1px solid var(--surface-line); border-radius: 10px;
+    padding: 9px 11px; color: var(--text); font-family: 'IBM Plex Sans', sans-serif; font-size: 13.5px;
+  }
+  .voice-review-field input:disabled { color: var(--text-dim); }
+  .voice-review-field textarea { min-height: 52px; resize: vertical; }
+
+  .voice-transcript-toggle { font-size: 12px; color: var(--text-dim); text-decoration: underline; cursor: pointer; margin-bottom: 12px; display: inline-block; }
+  .voice-transcript-box { display: none; background: var(--bg-deep); border-radius: 10px; padding: 10px 12px; margin-bottom: 12px; }
+  .voice-transcript-box.show { display: block; }
+  .voice-transcript-box textarea { width: 100%; background: transparent; border: none; color: var(--text); font-family: 'IBM Plex Sans', sans-serif; font-size: 13px; resize: vertical; min-height: 60px; }
+
+  .voice-resource-chip {
+    background: var(--accent-soft); border: 1px solid rgba(224,138,62,0.4); border-radius: 12px;
+    padding: 11px 12px; font-size: 12.5px; margin-bottom: 14px; display: flex; flex-direction: column; gap: 6px;
+  }
+  .voice-resource-chip .vrc-btn {
+    align-self: flex-start; padding: 6px 12px; border-radius: 100px; border: none; background: var(--accent);
+    color: var(--ink-deep); font-weight: 600; font-size: 11.5px; cursor: pointer;
+  }
+
+  .voice-actions { display: flex; gap: 10px; margin-top: 6px; }
+  .voice-actions button { flex: 1; padding: 13px; border-radius: 14px; font-weight: 600; font-size: 14px; cursor: pointer; font-family: 'IBM Plex Sans', sans-serif; }
+  .voice-actions .vbtn-edit { background: transparent; border: 1px solid var(--surface-line); color: var(--text); }
+  .voice-actions .vbtn-save { background: var(--accent); border: none; color: var(--ink-deep); }
+
+  /* ---- criticality / blocked / acceptance / insights (v4) ---- */
+  .badge.critical { background: var(--danger-soft); color: var(--danger); }
+  .badge.important { background: var(--amber-soft); color: var(--amber); }
+  .badge.fyi { background: rgba(255,255,255,0.08); color: var(--text-dim); }
+  .badge-row { display: flex; gap: 6px; flex-wrap: wrap; }
+  .blocked-line { display: flex; align-items: center; gap: 6px; font-size: 12px; color: var(--danger); margin-top: 8px; font-weight: 500; }
+
+  .needs-review-chip { display: inline-block; font-size: 9.5px; font-weight: 600; padding: 2px 7px; border-radius: 100px; background: var(--amber-soft); color: var(--amber); margin-left: 6px; vertical-align: middle; }
+
+  .mini-list { display: flex; flex-direction: column; gap: 8px; margin-top: 4px; }
+  .mini-row { background: var(--bg-deep); border-radius: 12px; padding: 11px 12px; }
+  .mini-row-top { display: flex; align-items: center; justify-content: space-between; gap: 8px; }
+  .mini-row-title { font-size: 13px; font-weight: 500; }
+  .mini-row-sub { font-size: 11px; color: var(--text-dim); margin-top: 2px; }
+  .mini-row select { background: var(--surface); border: 1px solid var(--surface-line); border-radius: 8px; color: var(--text); font-size: 11px; padding: 5px 6px; font-family: 'IBM Plex Sans', sans-serif; }
+  .mini-row-toggles { display: flex; gap: 6px; margin-top: 8px; flex-wrap: wrap; }
+  .mini-row-toggles button { padding: 6px 10px; border-radius: 8px; border: 1px dashed var(--surface-line); background: transparent; color: var(--text-dim); font-size: 11px; cursor: pointer; font-family: 'IBM Plex Sans', sans-serif; }
+  .mini-sub-form { margin-top: 10px; padding-top: 10px; border-top: 1px dashed var(--surface-line); display: flex; flex-direction: column; gap: 8px; }
+  .mini-sub-form.hidden { display: none; }
+  .mini-sub-form input, .mini-sub-form select, .mini-sub-form textarea {
+    background: var(--surface); border: 1px solid var(--surface-line); border-radius: 8px;
+    padding: 8px 10px; color: var(--text); font-family: 'IBM Plex Sans', sans-serif; font-size: 12.5px; width: 100%;
+  }
+  .mini-sub-form label { font-size: 11px; color: var(--text-dim); }
+  .mini-sub-save { padding: 8px; border-radius: 8px; border: none; background: var(--accent); color: var(--ink-deep); font-weight: 600; font-size: 12px; cursor: pointer; font-family: 'IBM Plex Sans', sans-serif; }
+
+  .info-note { background: var(--bg-deep); border-radius: 10px; padding: 9px 11px; font-size: 12.5px; margin-bottom: 6px; line-height: 1.4; }
+  .info-note:last-child { margin-bottom: 0; }
+  .info-note .meta { font-size: 10.5px; color: var(--text-dim); margin-top: 3px; }
+  .question-note { border-left: 2px solid var(--amber); }
+  .question-note .qstatus { font-size: 10px; font-weight: 600; color: var(--amber); }
+  .question-note.answered { border-left-color: var(--confirm); }
+  .question-note.answered .qstatus { color: var(--confirm); }
+
+  .acceptance-card {
+    border-radius: 20px; background: linear-gradient(165deg, #3A4E6E 0%, #263A5C 100%);
+    border: 1px solid var(--surface-line); padding: 20px;
+  }
+  .acceptance-card .label { font-size: 12px; color: var(--text-dim); }
+  .acceptance-card .name { font-family: 'Fraunces', serif; font-size: 20px; font-weight: 500; margin: 2px 0 12px; }
+  .acceptance-stats { display: flex; gap: 8px; margin-bottom: 14px; }
+  .acceptance-stats div { flex: 1; background: var(--bg-deep); border-radius: 12px; padding: 10px 6px; text-align: center; }
+  .acceptance-stats .n { font-family: 'Fraunces', serif; font-size: 18px; color: var(--accent); }
+  .acceptance-stats .l { font-size: 9.5px; color: var(--text-dim); margin-top: 2px; }
+  .acceptance-actions { display: flex; flex-direction: column; gap: 8px; }
+  .acceptance-actions button { padding: 12px; border-radius: 12px; font-weight: 600; font-size: 13.5px; cursor: pointer; font-family: 'IBM Plex Sans', sans-serif; border: 1px solid var(--surface-line); background: var(--bg-deep); color: var(--text); }
+  .acceptance-actions button.primary { background: var(--accent); border: none; color: var(--ink-deep); }
+  .accepted-line { display: flex; align-items: center; gap: 8px; font-size: 12.5px; color: var(--confirm); background: var(--confirm-soft); border-radius: 12px; padding: 10px 13px; }
+
+  .insight-link-row { display: flex; gap: 10px; margin-top: 4px; }
+  .insight-link { flex: 1; text-align: center; padding: 11px; border-radius: 12px; border: 1px solid var(--surface-line); background: transparent; color: var(--text-dim); font-size: 12.5px; cursor: pointer; font-family: 'IBM Plex Sans', sans-serif; }
+  .metric-row { display: flex; justify-content: space-between; padding: 9px 0; border-bottom: 1px solid var(--surface-line); font-size: 13px; }
+  .metric-row:last-child { border-bottom: none; }
+  .metric-row .mval { color: var(--accent); font-weight: 600; }
+  .history-item { font-size: 12px; color: var(--text-dim); padding: 8px 0; border-bottom: 1px solid var(--surface-line); }
+  .history-item:last-child { border-bottom: none; }
+  .close-owner-list { margin-top: 8px; max-height: 220px; overflow-y: auto; }
+  .close-owner-row { display: flex; align-items: center; justify-content: space-between; gap: 10px; padding: 8px 0; border-bottom: 1px solid var(--surface-line); }
+  .close-owner-title { font-size: 12.5px; flex: 1; }
+  .close-owner-title .meta { color: var(--text-dim); font-size: 11px; }
+  .close-owner-select { background: var(--ink-deep); color: var(--sand); border: 1px solid var(--surface-line); border-radius: 8px; padding: 5px 8px; font-size: 12px; font-family: 'IBM Plex Sans', sans-serif; }
+  .analytics-group { margin-top: 14px; }
+  .analytics-group-title { font-size: 11px; letter-spacing: .04em; text-transform: uppercase; color: var(--text-dim); margin: 0 0 4px; }
+  .metric-row .mnote { display: block; font-size: 10.5px; color: var(--text-dim); margin-top: 2px; }
+  .metric-row.flag { color: var(--amber); }
+  .history-item strong { color: var(--text); font-weight: 500; }
+
+  .team-table { display: flex; flex-direction: column; gap: 8px; }
+  .team-row { display: flex; align-items: center; justify-content: space-between; gap: 8px; background: var(--surface); border: 1px solid var(--surface-line); border-radius: 12px; padding: 11px 13px; }
+  .team-row .tname { font-size: 13.5px; font-weight: 500; }
+  .team-row .tdates { font-size: 11.5px; color: var(--text-dim); margin-top: 2px; }
+  .team-row .tstatus { font-size: 11.5px; white-space: nowrap; }
+  .team-row .tstatus.accepted { color: var(--confirm); }
+  .team-row .tstatus.waiting { color: var(--amber); }
+
+  .precheck-item { display: flex; gap: 8px; padding: 10px 12px; background: var(--amber-soft); border-radius: 10px; margin-bottom: 8px; font-size: 12.5px; line-height: 1.4; }
+  .precheck-item:last-child { margin-bottom: 0; }
+
+  .link-back { font-size: 11px; color: var(--accent); text-decoration: underline; cursor: pointer; margin-top: 4px; display: inline-block; }
+
+  .cover-status.proposed { color: var(--text-dim); }
+  .cover-status.awaiting { color: var(--amber); }
+  .cover-status.accepted { color: var(--confirm); }
+  .cover-status.declined { color: var(--danger); font-weight: 600; }
+  .unconfirmed-critical { display: flex; align-items: center; gap: 6px; font-size: 11.5px; color: var(--danger); font-weight: 600; margin-top: 6px; }
+  .capacity-line { font-size: 12px; color: var(--text-dim); margin-top: 6px; }
+  .capacity-line.overload { color: var(--danger); font-weight: 500; }
+  .capacity-line.conflict { color: var(--amber); font-weight: 500; }
+  .decline-banner { background: var(--danger-soft); border: 1px solid rgba(232,90,62,0.4); border-radius: 14px; padding: 13px 14px; font-size: 12.5px; }
+  .decline-banner strong { display: block; margin-bottom: 4px; }
+  .simulate-tag { font-size: 9px; font-weight: 700; letter-spacing: 0.04em; color: var(--text-dim); border: 1px dashed var(--surface-line); padding: 2px 6px; border-radius: 100px; margin-left: 6px; vertical-align: middle; }
+  .voice-consent { font-size: 11.5px; color: var(--text-dim); background: var(--bg-deep); border-radius: 10px; padding: 10px 12px; margin-bottom: 14px; line-height: 1.5; }
+
+  .hidden { display: none !important; }
+
+  @media (prefers-reduced-motion: reduce) {
+    .stat, .catchup-section { animation: none !important; opacity: 1 !important; transform: none !important; }
+  }
+</style>
+</head>
+<body>
+<div class="app">
+
+  <div class="brand">
+    <svg width="18" height="18" viewBox="0 0 18 18" fill="none"><rect width="18" height="18" rx="4" fill="#4B5EAA"/><path d="M4 6.5h10M4 9h7M4 11.5h10" stroke="#F3EADA" stroke-width="1.3" stroke-linecap="round"/></svg>
+    <span>Vacation Hub</span>
+    <span class="demo-chip" id="demoDateChip">PROTOTYPE</span>
+  </div>
+  <p class="demo-note">Demo data · today is treated as <strong>8 October 2026</strong> for every status and deadline. No real notifications, permissions, or storage — see individual notes throughout.</p>
+
+  <div class="hero">
+    <p class="hero-label">Out of office</p>
+    <p class="hero-name">Aida</p>
+    <p class="hero-dates"><strong>Oct 1</strong> &nbsp;→&nbsp; <strong>Oct 12</strong></p>
+    <div class="hero-status" id="statusPill">
+      <span class="dot"></span>
+      <span id="statusText">Preparing to leave</span>
+    </div>
+  </div>
+
+  <div class="tabs">
+    <button class="tab-btn active" data-tab="prepare">Prepare Leave</button>
+    <button class="tab-btn" data-tab="cover">My Cover</button>
+    <button class="tab-btn" data-tab="welcome">Welcome Back</button>
+  </div>
+
+  <!-- ============ TAB 1: PREPARE LEAVE ============ -->
+  <div class="tab-panel" id="tab-prepare">
+
+    <button class="voice-btn block" id="globalSpeakBtn">🎙️ Speak your handover</button>
+    <button class="voice-btn block" id="usePreviousBtn" style="background:transparent;">↺ Use previous handover</button>
+
+    <div>
+      <div class="section-title">
+        Before you leave
+        <span class="section-sub" id="checklistCount">0 / 4</span>
+      </div>
+      <div class="progress-track"><div class="progress-fill" id="progressFill"></div></div>
+
+      <div class="checklist" id="checklist" style="margin-top:10px;">
+        <div class="check-item" data-item="projects">
+          <div class="check-box"><svg viewBox="0 0 16 16" fill="none"><path d="M3 8.5l3 3 7-7" stroke="#0E1729" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+          <div class="check-label">Projects updated</div>
+        </div>
+        <div class="check-item" data-item="backup">
+          <div class="check-box"><svg viewBox="0 0 16 16" fill="none"><path d="M3 8.5l3 3 7-7" stroke="#0E1729" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+          <div class="check-label">Backup assigned</div>
+        </div>
+        <div class="check-item" data-item="decisions">
+          <div class="check-box"><svg viewBox="0 0 16 16" fill="none"><path d="M3 8.5l3 3 7-7" stroke="#0E1729" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+          <div class="check-label">Open decisions documented</div>
+        </div>
+        <div class="check-item" data-item="deadlines">
+          <div class="check-box"><svg viewBox="0 0 16 16" fill="none"><path d="M3 8.5l3 3 7-7" stroke="#0E1729" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+          <div class="check-label">Deadlines checked</div>
+        </div>
+      </div>
+
+      <button class="primary-btn" id="handoverBtn" disabled style="margin-top:14px;">Complete handover</button>
+    </div>
+
+    <hr class="divider">
+
+    <div class="form-card">
+      <div class="section-title">Assign your cover</div>
+      <p class="form-hint">Applies to your whole absence by default. You can pick someone else per project below.</p>
+
+      <div class="form-row">
+        <label for="coverName">Cover person</label>
+        <input type="text" id="coverName" placeholder="e.g. Maria Keller" value="Maria Keller">
+      </div>
+      <div class="form-row">
+        <label for="coverEmail">Email</label>
+        <input type="email" id="coverEmail" placeholder="maria@company.com" value="maria.keller@company.com">
+      </div>
+      <div class="form-grid-2">
+        <div class="form-row">
+          <label for="coverStart">Start date</label>
+          <input type="date" id="coverStart" value="2026-10-01">
+        </div>
+        <div class="form-row">
+          <label for="coverEnd">End date</label>
+          <input type="date" id="coverEnd" value="2026-10-12">
+        </div>
+      </div>
+      <div class="form-row" style="margin-top:4px;">
+        <label for="capacityInput">Estimated hours/week you'll need from your cover</label>
+        <input type="number" id="capacityInput" min="0" placeholder="e.g. 6" value="6">
+      </div>
+      <p class="form-hint" style="margin:-4px 0 4px;">Self-estimated by you until your cover confirms it themselves.</p>
+      <div class="form-row" style="margin-top:4px;">
+        <label for="backupName">Backup cover (optional)</label>
+        <input type="text" id="backupName" placeholder="e.g. Thomas Berg">
+      </div>
+      <div class="form-row">
+        <label for="backupEmail">Backup email</label>
+        <input type="email" id="backupEmail" placeholder="thomas@company.com">
+      </div>
+      <p class="form-hint" style="margin:-4px 0 4px;">A named backup is informational only until explicitly requested and confirmed — they never take over automatically.</p>
+      <div id="backupStatusPanel"></div>
+      <button class="primary-btn" id="saveCoverBtn">Save cover assignment</button>
+      <p class="cover-confirm" id="coverConfirm">Saved — Maria Keller is covering for you.</p>
+    </div>
+
+    <div class="form-card">
+      <div class="section-title" style="margin-bottom:2px;">Team availability</div>
+      <p class="form-hint">Who's out, who's covering, and whether they've accepted.</p>
+      <div class="team-table" id="teamTable"></div>
+    </div>
+
+    <div>
+      <div class="section-title" style="margin-bottom:2px;">Your projects</div>
+      <p class="form-hint" style="margin-bottom:12px;">Tap a project to override its cover person and attach documents or links.</p>
+      <div id="projectMiniList"></div>
+    </div>
+
+  </div>
+
+  <!-- ============ TAB 2: MY COVER ============ -->
+  <div class="tab-panel hidden" id="tab-cover">
+
+    <div id="acceptanceWrap"></div>
+
+    <div class="cover-header">
+      <p class="label">Covering for</p>
+      <p class="name" id="coveringForName">Aida</p>
+      <p class="range" id="coveringForRange">Oct 1 – Oct 12</p>
+      <p class="range" id="coveringForBackup" style="margin-top:6px;"></p>
+    </div>
+
+    <div id="reminderBanners"></div>
+
+    <div class="status-counts">
+      <div class="status-count overdue"><div class="n" id="countOverdue">0</div><div class="l">🔴 Overdue</div></div>
+      <div class="status-count due-today"><div class="n" id="countDueToday">0</div><div class="l">🟠 Due today</div></div>
+      <div class="status-count critical"><div class="n" id="countCritical">0</div><div class="l">🔴 Critical</div></div>
+      <div class="status-count upcoming"><div class="n" id="countUpcoming">0</div><div class="l">🟡 Upcoming</div></div>
+    </div>
+
+    <div>
+      <div class="section-title">Cover Dashboard</div>
+      <div id="taskCardList" style="margin-top:10px;"></div>
+    </div>
+
+  </div>
+
+  <!-- ============ TAB 3: WELCOME BACK ============ -->
+  <div class="tab-panel hidden" id="tab-welcome">
+    <div class="catchup-card" id="catchupCard">
+      <p class="catchup-eyebrow">Welcome back 👋</p>
+      <p class="catchup-sub">Here's what happened while you were out.</p>
+
+      <button class="catchup-btn" id="catchupBtn">✨ Catch me up</button>
+
+      <div id="catchupResults" class="hidden"></div>
+      <button class="primary-btn hidden" id="confirmCaughtUpBtn" style="margin-top:18px;background:var(--moss);">✓ I've reviewed this — all caught up</button>
+      <button class="primary-btn hidden" id="reviewCloseBtn" style="margin-top:18px;">Review &amp; close leave</button>
+    </div>
+    <div class="insight-link-row">
+      <button class="insight-link" id="viewHistoryBtn">View history</button>
+      <button class="insight-link" id="viewAnalyticsBtn">View analytics</button>
+    </div>
+  </div>
+
+</div>
+
+<div class="toast" id="toast"></div>
+
+<div class="voice-overlay hidden" id="voiceOverlay">
+  <div class="voice-sheet" id="voiceSheet"></div>
+</div>
+
+<script>
+(function() {
+  /* ============================================================
+     DATA MODEL
+     Structured to map cleanly onto SharePoint Lists / Power Apps /
+     Power Automate later: Users, Leaves, Projects, Tasks,
+     CoverAssignments, Updates, Decisions.
+     ============================================================ */
+
+  const DEMO_TODAY = new Date('2026-10-08T09:00:00');
+
+  const DB = {
+    users: [
+      { id: 'u1', name: 'Aida', email: 'aida@company.com' },
+      { id: 'u2', name: 'Maria Keller', email: 'maria.keller@company.com' },
+      { id: 'u3', name: 'Jonas Weber', email: 'jonas.weber@company.com' },
+      { id: 'u4', name: 'Elena Brandt', email: 'elena.brandt@company.com' }
+    ],
+    leaves: [
+      { id: 'l1', userId: 'u1', start: '2026-10-01', end: '2026-10-12' }
+    ],
+    projects: [
+      { id: 'p1', name: 'Project Alpha', allowedDecisions: 'Minor scope clarifications, vendor scheduling', approvalLimit: 'Up to €2,000', escalationContact: 'Jonas Weber' },
+      { id: 'p2', name: 'Project Meridian', allowedDecisions: 'Budget line adjustments within approved total', approvalLimit: 'Up to €5,000', escalationContact: 'Jonas Weber' },
+      { id: 'p3', name: 'Project Atlas', allowedDecisions: '', approvalLimit: '', escalationContact: '' },
+      { id: 'p4', name: 'Onboarding Flow', allowedDecisions: '', approvalLimit: '', escalationContact: '' },
+      { id: 'p5', name: 'Mobile Release', allowedDecisions: '', approvalLimit: '', escalationContact: '' }
+    ],
+    tasks: [
+      { id: 't1', projectId: 'p1', title: 'Budget approval', owner: 'Aida', deadline: '2026-10-05', status: 'Open', priority: 'High', criticality: 'Important', estimatedEffort: 2, reminderSent: false, completedDate: null, completedBy: null },
+      { id: 't2', projectId: 'p2', title: 'Sign off budget revision', owner: 'Aida', deadline: '2026-10-08', status: 'Open', priority: 'High', criticality: 'Critical', estimatedEffort: 3, reminderSent: false, completedDate: null, completedBy: null },
+      { id: 't3', projectId: 'p3', title: 'Confirm new launch date', owner: 'Aida', deadline: '2026-10-09', status: 'Open', priority: 'Medium', criticality: 'Important', estimatedEffort: 2, reminderSent: false, completedDate: null, completedBy: null },
+      { id: 't4', projectId: 'p4', title: 'Review onboarding design option', owner: 'Aida', deadline: '2026-10-15', status: 'Open', priority: 'Low', criticality: 'FYI', estimatedEffort: 1, reminderSent: false, completedDate: null, completedBy: null },
+      { id: 't5', projectId: 'p5', title: 'QA regression pass', owner: 'Aida', deadline: '2026-10-06', status: 'Completed', priority: 'Medium', criticality: 'FYI', estimatedEffort: 4, reminderSent: true, completedDate: '2026-10-06', completedBy: 'Maria Keller' }
+    ],
+    coverAssignments: {
+      main: {
+        coverPerson: 'Maria Keller', coverEmail: 'maria.keller@company.com', start: '2026-10-01', end: '2026-10-12',
+        backupPerson: '', backupEmail: '', backupStatus: 'none',   // none | requested | confirmed | declined
+        capacityHoursPerWeek: 6, capacityStatus: 'Unknown'      // Unknown (self-estimated) | Confirmed (by cover)
+      },
+      overrides: {}   // { projectId: coverPersonName }
+    },
+    updates: [],
+    decisions: [],
+    // Resources: ID, ProjectID, TaskID (optional), ResourceType (Document/Link),
+    // Title, URL/FileReference, Description, AddedBy, CreatedDate.
+    // Documents store only a reference/URL, never a second copy of the file —
+    // in the Microsoft 365 version this reference points into SharePoint.
+    resources: [],
+    // Context: ID, ProjectID, TaskID (optional), Text, AddedBy, CreatedDate.
+    context: [],
+    // Questions: ID, ProjectID, TaskID (optional), Question, AskedBy, Date, Status, Urgent, RoutedTo, Answer, AnsweredBy, AnsweredDate.
+    questions: [],
+    // Contingencies ("If this happens -> do this"): ID, ProjectID, TaskID (optional), Trigger, Action, Contact, Resource, AddedBy, CreatedDate.
+    contingencies: [],
+    // Dependencies ("Waiting for / depends on"): ID, ProjectID, TaskID (optional), Dependency, Owner, ExpectedDate, Impact, AddedBy, CreatedDate.
+    dependencies: [],
+    // Handover acceptance: Status (Not sent/Sent/Declined/Accepted/Closed), SentDate, AcceptedBy, AcceptedDate, DeclineReason, DeclinedDate.
+    // This IS the single cover-acceptance process — nothing else in the app grants active responsibility.
+    handover: { status: 'Not sent', sentDate: null, acceptedBy: null, acceptedDate: null, declineReason: null, declinedDate: null, summaryConfirmed: false },
+    // Known absences used only to flag overlap between a proposed cover person and their own time off.
+    knownAbsences: [
+      { name: 'Maria Keller', start: '2026-10-03', end: '2026-10-04' }
+    ],
+    // History / audit trail: Action, ChangedBy, ChangedDate, Detail.
+    history: [],
+    // Static demo data for the simple Team Availability view.
+    team: [
+      { name: 'Thomas Berg', leaveStart: '2026-10-07', leaveEnd: '2026-10-09', primaryCover: 'Michael Ostrowski', accepted: false },
+      { name: 'Elena Brandt', leaveStart: '2026-10-20', leaveEnd: '2026-10-24', primaryCover: 'Jonas Weber', accepted: true }
+    ]
+  };
+  let updateSeq = 0, decisionSeq = 0, resourceSeq = 0, contextSeq = 0, questionSeq = 0, contingencySeq = 0, dependencySeq = 0, historySeq = 0;
+
+  function seedUpdate(u) { u.id = 'up' + (++updateSeq); u.createdDate = u.createdDate || fmtISO(DEMO_TODAY); DB.updates.push(u); return u; }
+  function seedDecision(d) { d.id = 'dec' + (++decisionSeq); DB.decisions.push(d); return d; }
+  function seedResource(r) {
+    r.id = 'res' + (++resourceSeq);
+    r.createdDate = r.createdDate || fmtISO(DEMO_TODAY);
+    if (r.addedDuringAbsence === undefined) r.addedDuringAbsence = false;
+    if (r.taskId === undefined) r.taskId = null;
+    if (r.needsReview === undefined) r.needsReview = false;
+    DB.resources.push(r);
+    return r;
+  }
+  function seedContext(c) {
+    c.id = 'ctx' + (++contextSeq);
+    c.createdDate = c.createdDate || fmtISO(DEMO_TODAY);
+    if (c.addedDuringAbsence === undefined) c.addedDuringAbsence = false;
+    if (c.taskId === undefined) c.taskId = null;
+    if (c.needsReview === undefined) c.needsReview = false;
+    DB.context.push(c);
+    return c;
+  }
+  function seedQuestion(q) {
+    q.id = 'q' + (++questionSeq);
+    q.date = q.date || fmtISO(DEMO_TODAY);
+    if (q.taskId === undefined) q.taskId = null;
+    q.status = q.status || 'Open';
+    DB.questions.push(q);
+    return q;
+  }
+  function seedContingency(c) {
+    c.id = 'cnt' + (++contingencySeq);
+    c.createdDate = c.createdDate || fmtISO(DEMO_TODAY);
+    if (c.taskId === undefined) c.taskId = null;
+    if (c.needsReview === undefined) c.needsReview = false;
+    DB.contingencies.push(c);
+    return c;
+  }
+  function seedDependency(d) {
+    d.id = 'dep' + (++dependencySeq);
+    d.createdDate = d.createdDate || fmtISO(DEMO_TODAY);
+    if (d.taskId === undefined) d.taskId = null;
+    DB.dependencies.push(d);
+    return d;
+  }
+  function logHistory(action, changedBy, detail) {
+    DB.history.push({ id: 'h' + (++historySeq), action, changedBy, changedDate: fmtISO(DEMO_TODAY), detail: detail || '' });
+  }
+
+  // Seed activity that already happened during the absence, so
+  // Welcome Back isn't empty on first load.
+  const seedAtlas = seedUpdate({ projectId: 'p3', taskId: 't3', type: 'Decision', description: 'Launch date for Atlas moved from Oct 20 to Oct 27.', actionRequired: false, priority: 'Medium', newDeadline: null, addedBy: 'Maria Keller', createdDate: '2026-10-07' });
+  seedDecision({ updateId: seedAtlas.id, projectId: 'p3', decision: 'Launch date moved to Oct 27', why: 'Vendor asset delivery is delayed by two weeks.', decidedBy: 'Maria Keller & design lead', impact: 'Marketing campaign timeline shifts by one week.', createdDate: '2026-10-07' });
+
+  const seedOnboarding = seedUpdate({ projectId: 'p4', taskId: 't4', type: 'Decision', description: "Design team picked option B for the onboarding flow.", actionRequired: false, priority: 'Low', newDeadline: null, addedBy: 'Maria Keller', createdDate: '2026-10-06' });
+  seedDecision({ updateId: seedOnboarding.id, projectId: 'p4', decision: 'Onboarding flow: option B selected', why: 'Option B scored higher in usability testing.', decidedBy: 'Design team', impact: 'Dev needs an updated Figma handoff before build.', createdDate: '2026-10-06' });
+
+  seedUpdate({ projectId: 'p2', taskId: 't2', type: 'Update', description: 'Client requested a revised budget breakdown by category before sign-off.', actionRequired: true, priority: 'High', newDeadline: null, addedBy: 'Maria Keller', createdDate: '2026-10-07' });
+  seedUpdate({ projectId: 'p5', taskId: 't5', type: 'Update', description: 'QA finished the regression pass — build is ready for your review.', actionRequired: false, priority: 'Medium', newDeadline: null, addedBy: 'Maria Keller', createdDate: '2026-10-06' });
+  seedUpdate({ projectId: 'p1', taskId: 't1', type: 'Risk', description: 'Vendor invoice does not match the agreed budget — may delay approval.', actionRequired: true, priority: 'High', newDeadline: null, addedBy: 'Maria Keller', createdDate: '2026-10-05' });
+
+  // Resources attached before the leave started (by Aida).
+  seedResource({ projectId: 'p1', title: 'Project Plan.docx', resourceType: 'Document', urlOrFileRef: '#', description: 'Current scope and milestones.', addedBy: 'Aida', createdDate: '2026-09-24' });
+  seedResource({ projectId: 'p1', title: 'Project Alpha SharePoint', resourceType: 'Link', urlOrFileRef: 'https://contoso.sharepoint.com/sites/ProjectAlpha', description: 'Team site.', addedBy: 'Aida', createdDate: '2026-09-24' });
+  seedResource({ projectId: 'p2', title: 'Budget.xlsx', resourceType: 'Document', urlOrFileRef: '#', description: 'Original approved budget.', addedBy: 'Aida', createdDate: '2026-09-26' });
+  seedResource({ projectId: 'p2', title: 'Meeting Notes', resourceType: 'Link', urlOrFileRef: 'https://contoso.sharepoint.com/sites/Meridian/notes', description: '', addedBy: 'Aida', createdDate: '2026-09-26' });
+  seedResource({ projectId: 'p3', taskId: 't3', title: 'Launch Plan.pptx', resourceType: 'Document', urlOrFileRef: '#', description: 'Presentation for launch readiness.', addedBy: 'Aida', createdDate: '2026-09-27' });
+
+  // Resources added by the cover person while Aida was away.
+  seedResource({ projectId: 'p3', taskId: 't3', title: 'Updated Project Plan.docx', resourceType: 'Document', urlOrFileRef: '#', description: 'Reflects the new Oct 27 launch date.', addedBy: 'Maria Keller', createdDate: '2026-10-07', addedDuringAbsence: true });
+  seedResource({ projectId: 'p2', taskId: 't2', title: 'Final Budget.xlsx', resourceType: 'Document', urlOrFileRef: '#', description: 'Revised breakdown requested by the client.', addedBy: 'Maria Keller', createdDate: '2026-10-07', addedDuringAbsence: true });
+
+  // Important context — things only the project owner usually knows.
+  seedContext({ projectId: 'p1', text: 'Client is sensitive about scope creep — always confirm changes by email, not just in a Teams call.', addedBy: 'Aida', createdDate: '2026-09-25' });
+  seedContext({ projectId: 'p3', taskId: 't3', text: 'The design lead prefers async written updates over calls — ping them on Teams, don\'t schedule a meeting.', addedBy: 'Maria Keller', createdDate: '2026-10-07', addedDuringAbsence: true });
+
+  // If this happens -> do this (contingencies).
+  seedContingency({ projectId: 'p2', taskId: 't2', trigger: 'Client disputes the revised budget figure', action: 'Pause sign-off and loop in Jonas from Finance before responding.', contact: 'Jonas Weber', resource: 'Budget Escalation Process' });
+
+  // Waiting for / depends on.
+  seedDependency({ projectId: 'p2', taskId: 't2', dependency: 'Client budget confirmation', owner: 'Client Finance Team', expectedDate: '2026-10-10', impact: 'Vendor payment cannot be released.' });
+
+  // Open questions from the cover person.
+  seedQuestion({ projectId: 'p1', taskId: 't1', question: 'Is the vendor invoice amount final, or still being negotiated?', askedBy: 'Maria Keller', date: '2026-10-06', status: 'Open' });
+
+  // A simplified snapshot of a previous leave, used by "Use previous handover".
+  const DB_PREVIOUS_HANDOVER = {
+    context: [
+      { projectName: 'Project Alpha', text: 'Stakeholder prefers a short weekly status email over a status meeting.' }
+    ],
+    resources: [
+      { projectName: 'Project Alpha', title: 'Vendor Contacts.xlsx', resourceType: 'Document' }
+    ],
+    contingencies: [
+      { projectName: 'Project Meridian', trigger: 'Client disputes an invoice', action: 'Escalate to the finance director immediately — do not respond alone.', contact: 'Jonas Weber', resource: '' }
+    ]
+  };
+
+  /* ============================================================
+     HELPERS
+     ============================================================ */
+  function fmtISO(d) { return d.toISOString().slice(0, 10); }
+  function parseDate(s) { const d = new Date(s + 'T00:00:00'); return d; }
+  function fmtLong(s) { return parseDate(s).toLocaleDateString('en-GB', { day: 'numeric', month: 'long' }); }
+  function dayDiff(iso) {
+    const d = parseDate(iso);
+    const t = new Date(DEMO_TODAY.getFullYear(), DEMO_TODAY.getMonth(), DEMO_TODAY.getDate());
+    return Math.round((d - t) / 86400000);
+  }
+  function projectName(id) { return DB.projects.find(p => p.id === id)?.name || 'Unknown project'; }
+  function coverForProject(pid) { return DB.coverAssignments.overrides[pid] || DB.coverAssignments.main.coverPerson; }
+  // A name alone is never a confirmed cover — the label reflects the actual acceptance state.
+  function coverStatusPrefix() {
+    const h = DB.handover;
+    if (h.status === 'Accepted' || h.status === 'Closed') return { text: 'Covered by', cls: 'accepted' };
+    if (h.status === 'Sent') return { text: 'Awaiting acceptance', cls: 'awaiting' };
+    if (h.status === 'Declined') return { text: '⚠ Declined — needs reassignment', cls: 'declined' };
+    return { text: 'Proposed cover', cls: 'proposed' };
+  }
+  function coverStatusHtml(name) {
+    const s = coverStatusPrefix();
+    return `<span class="cover-status ${s.cls}">${s.text}: ${name}</span>`;
+  }
+  function isCoverConfirmed() { return DB.handover.status === 'Accepted' || DB.handover.status === 'Closed'; }
+  function capacityAssessment() {
+    const main = DB.coverAssignments.main;
+    const totalEffort = DB.tasks.filter(t => t.status !== 'Completed').reduce((sum, t) => sum + (t.estimatedEffort || 0), 0);
+    const capacity = main.capacityHoursPerWeek;
+    const overloaded = capacity != null && totalEffort > capacity;
+    const absence = DB.knownAbsences.find(a => a.name === main.coverPerson &&
+      !(parseDate(a.end) < parseDate(main.start) || parseDate(a.start) > parseDate(main.end)));
+    return { totalEffort, capacity, overloaded, confirmed: main.capacityStatus === 'Confirmed', absence };
+  }
+  function bucketFor(task) {
+    if (task.status === 'Completed') return null;
+    const diff = dayDiff(task.deadline);
+    if (diff < 0) return 'overdue';
+    if (diff === 0) return 'due-today';
+    if (diff <= 3) return 'upcoming';
+    return 'on-track';
+  }
+  function bucketLabel(b) { return { 'overdue': '🔴 OVERDUE', 'due-today': '🟠 DUE TODAY', 'upcoming': '🟡 UPCOMING', 'on-track': '🟢 ON TRACK' }[b]; }
+  function resourceIcon(r) {
+    if (r.resourceType === 'Link') return '🔗';
+    const t = (r.title || '').toLowerCase();
+    if (t.endsWith('.docx') || t.endsWith('.doc')) return '📄';
+    if (t.endsWith('.xlsx') || t.endsWith('.xls')) return '📊';
+    if (t.endsWith('.pptx') || t.endsWith('.ppt')) return '📑';
+    if (t.endsWith('.pdf')) return '📕';
+    return '📎';
+  }
+  function resourcesForProject(pid) { return DB.resources.filter(r => r.projectId === pid); }
+  function resourcesForTask(task) { return DB.resources.filter(r => r.taskId === task.id || (!r.taskId && r.projectId === task.projectId)); }
+  function taskNameOf(tid) { return DB.tasks.find(t => t.id === tid)?.title || ''; }
+  function resourceItemHtml(r) {
+    const scopeTag = r.taskId ? ` · ${taskNameOf(r.taskId)}` : '';
+    const reviewChip = r.needsReview ? '<span class="needs-review-chip">NEEDS REVIEW</span>' : '';
+    return `<a class="resource-item" href="${r.urlOrFileRef || '#'}" target="_blank" rel="noopener">
+        <span class="r-icon">${resourceIcon(r)}</span>
+        <span class="r-body">
+          <span class="r-title">${r.title}${reviewChip}</span>
+          <div class="r-meta">${r.resourceType}${scopeTag} · added by ${r.addedBy}</div>
+        </span>
+      </a>`;
+  }
+
+  /* ---- v4: criticality, context, questions, contingencies, dependencies ---- */
+  function criticalityLabel(c) { return { Critical: '🔴 CRITICAL', Important: '🟡 IMPORTANT', FYI: '⚪ FYI' }[c] || '⚪ FYI'; }
+  function criticalityClass(c) { return { Critical: 'critical', Important: 'important', FYI: 'fyi' }[c] || 'fyi'; }
+  function contextForProject(pid) { return DB.context.filter(c => c.projectId === pid && !c.taskId); }
+  function contextForTask(task) { return DB.context.filter(c => c.taskId === task.id || (!c.taskId && c.projectId === task.projectId)); }
+  function questionsForProject(pid) { return DB.questions.filter(q => q.projectId === pid); }
+  function questionsForTask(task) { return DB.questions.filter(q => q.taskId === task.id); }
+  function contingenciesForTask(task) { return DB.contingencies.filter(c => c.taskId === task.id || (!c.taskId && c.projectId === task.projectId)); }
+  function dependencyForTask(task) { return DB.dependencies.find(d => d.taskId === task.id) || null; }
+  function questionItemHtml(q) {
+    const answered = q.status === 'Answered';
+    return `<div class="info-note question-note${answered ? ' answered' : ''}">
+        <span class="qstatus">${answered ? '✓ ANSWERED' : '? OPEN'}</span>
+        <div>${q.question}</div>
+        ${answered ? `<div class="meta">Answer: ${q.answer || ''}</div>` : ''}
+        <div class="meta">Asked by ${q.askedBy} · ${fmtLong(q.date)}</div>
+      </div>`;
+  }
+  function checkHandoverReadiness() {
+    const warnings = [];
+    if (!DB.coverAssignments.main.coverPerson) warnings.push('No cover person assigned yet.');
+    const criticalNoContingency = DB.tasks.filter(t => t.status !== 'Completed' && t.criticality === 'Critical' && contingenciesForTask(t).length === 0);
+    if (criticalNoContingency.length) warnings.push(`Critical task has no contingency instruction — "${criticalNoContingency[0].title}".`);
+    const placeholderDocs = DB.resources.filter(r => r.resourceType === 'Document' && (!r.urlOrFileRef || r.urlOrFileRef === '#'));
+    if (placeholderDocs.length) warnings.push(`Mentioned document has no link — "${placeholderDocs[0].title}".`);
+    const criticalNoContext = DB.projects.filter(p => DB.tasks.some(t => t.projectId === p.id && t.criticality === 'Critical') && contextForProject(p.id).length === 0);
+    if (criticalNoContext.length) warnings.push(`"${criticalNoContext[0].name}" has critical items but no important context noted.`);
+    return warnings;
+  }
+  const openAnswerForms = new Set();
+  function contextItemHtml(c) {
+    const chip = c.needsReview ? '<span class="needs-review-chip">NEEDS REVIEW</span>' : '';
+    return `<div class="info-note">🧠 ${c.text}${chip}<div class="meta">${c.addedBy} · ${fmtLong(c.createdDate)}</div></div>`;
+  }
+  function dependencyNoteHtml(d) {
+    return `<div class="info-note">⏸ <strong>Waiting for:</strong> ${d.dependency}<div class="meta">Owner: ${d.owner || '—'} · Expected: ${d.expectedDate ? fmtLong(d.expectedDate) : '—'} · Impact if delayed: ${d.impact || '—'}</div></div>`;
+  }
+  function contingencyNoteHtml(c) {
+    const chip = c.needsReview ? '<span class="needs-review-chip">NEEDS REVIEW</span>' : '';
+    return `<div class="info-note">🆘 <strong>If this happens:</strong> ${c.trigger}${chip}<div class="meta">Then: ${c.action}${c.contact ? ' · Contact: ' + c.contact : ''}${c.resource ? ' · Resource: ' + c.resource : ''}</div></div>`;
+  }
+  function questionBlockHtml(questions) {
+    if (!questions.length) return '<p class="resource-empty">No questions yet.</p>';
+    return questions.map(q => {
+      const answered = q.status === 'Answered';
+      const formOpen = openAnswerForms.has(q.id);
+      return `<div class="info-note question-note${answered ? ' answered' : ''}">
+          <span class="qstatus">${answered ? '✓ ANSWERED' : '? OPEN'}</span>
+          <div>${q.question}</div>
+          ${answered
+            ? `<div class="meta">Answer: ${q.answer}</div>`
+            : `<div class="meta">Asked by ${q.askedBy} · ${fmtLong(q.date)}</div>
+               <button type="button" class="link-back answer-toggle-btn" data-question="${q.id}" style="margin-top:4px;">${formOpen ? 'Cancel' : 'Answer'}</button>
+               <div class="mini-sub-form ${formOpen ? '' : 'hidden'}" id="answer-form-${q.id}">
+                 <textarea class="ans-input" data-question="${q.id}" placeholder="Your answer..."></textarea>
+                 <button type="button" class="mini-sub-save answer-save-btn" data-question="${q.id}">Save answer</button>
+               </div>`}
+        </div>`;
+    }).join('');
+  }
+  function showToast(msg) {
+    const t = document.getElementById('toast');
+    t.textContent = msg;
+    t.classList.add('show');
+    clearTimeout(t._timer);
+    t._timer = setTimeout(() => t.classList.remove('show'), 2200);
+  }
+
+  /* ---- voice / NLU helpers ---- */
+  function escapeHtml(s) { return (s || '').replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;'); }
+  function escapeAttr(s) { return escapeHtml(s).replace(/"/g, '&quot;'); }
+  function capitalize(s) { s = (s || '').trim(); return s ? s.charAt(0).toUpperCase() + s.slice(1) : s; }
+
+  const MONTHS = {
+    january: 0, february: 1, march: 2, april: 3, may: 4, june: 5, july: 6, august: 7, september: 8, october: 9, november: 10, december: 11,
+    januar: 0, februar: 1, märz: 2, marz: 2, mai: 4, juni: 5, juli: 6, oktober: 9, dezember: 11
+  };
+  function isoDateFromMonthDay(monthIdx, day) {
+    return `2026-${String(monthIdx + 1).padStart(2, '0')}-${String(day).padStart(2, '0')}`;
+  }
+  function extractDate(text) {
+    let m = text.match(/(\d{1,2})(?:st|nd|rd|th)?\.?\s+(?:of\s+)?([A-Za-zÀ-ÿ]+)/);
+    if (m && MONTHS.hasOwnProperty(m[2].toLowerCase())) return isoDateFromMonthDay(MONTHS[m[2].toLowerCase()], parseInt(m[1], 10));
+    m = text.match(/([A-Za-zÀ-ÿ]+)\s+(\d{1,2})(?:st|nd|rd|th)?/);
+    if (m && MONTHS.hasOwnProperty(m[1].toLowerCase())) return isoDateFromMonthDay(MONTHS[m[1].toLowerCase()], parseInt(m[2], 10));
+    return null;
+  }
+  function extractInfo(text) {
+    const lower = text.toLowerCase();
+    const info = { raw: text };
+    info.date = extractDate(text);
+    info.projectId = null;
+    for (const p of DB.projects) { if (lower.includes(p.name.toLowerCase())) { info.projectId = p.id; break; } }
+    info.person = null;
+    for (const u of DB.users) {
+      if (u.name === 'Aida') continue;
+      const first = u.name.toLowerCase().split(' ')[0];
+      if (lower.includes(first)) { info.person = u.name; break; }
+    }
+    const decisionMatch = text.match(/(?:we(?:'ve| have)? decided|wir haben entschieden|haben (?:uns )?entschieden|haben beschlossen|decided)\s*(?:to\s+|that\s+)?([^.]+)/i);
+    info.isDecision = !!decisionMatch;
+    info.decision = decisionMatch ? capitalize(decisionMatch[1].trim()) : null;
+    const whyMatch = text.match(/(?:because|weil|since)\s+([^.]+)/i);
+    info.why = whyMatch ? capitalize(whyMatch[1].trim()) : null;
+    const waitMatch = text.match(/(?:waiting for|warten (?:noch )?auf|still waiting on)\s+([^.,]+)/i);
+    info.waitingOn = waitMatch ? capitalize(waitMatch[1].trim()) : null;
+    const nextActionMatch = text.match(/(?:as soon as|sobald)\s+([^,]+),\s*(.+?)(?:\.|$)/i);
+    info.nextAction = nextActionMatch ? capitalize(nextActionMatch[2].trim()) : null;
+    info.noActionNeeded = /nichts (?:tun|machen)|nothing to do|no action needed|muss nichts (?:tun|machen)/i.test(text);
+    const resourceKeyword = text.match(/(sharepoint|teams|planner|onenote)/i);
+    info.resourceMention = null;
+    if (resourceKeyword) {
+      const around = text.match(/(?:in|on|under|unter|auf)\s+(?:the\s+)?([A-Za-zÀ-ÿ0-9 ]+?)\s+(sharepoint|teams|planner|onenote)/i);
+      info.resourceMention = around ? `${capitalize(around[1].trim())} ${capitalize(around[2])}` : capitalize(resourceKeyword[1]);
+    }
+    info.criticality = /critical|urgent|dringend|wichtig|kritisch/i.test(text) ? 'Critical' : 'FYI';
+    const ifThisMatch = text.match(/if\s+([^,]+),\s*(.+?)(?:\.|$)/i) || text.match(/wenn\s+([^,]+),\s*(.+?)(?:\.|$)/i);
+    info.contingencyTrigger = ifThisMatch ? capitalize(ifThisMatch[1].trim()) : null;
+    info.contingencyAction = ifThisMatch ? capitalize(ifThisMatch[2].trim()) : null;
+    return info;
+  }
+  function composeUpdateDescription(info, transcript) {
+    if (info.isDecision && info.decision) return info.decision.replace(/\.?$/, '.');
+    return transcript;
+  }
+
+  /* ============================================================
+     TABS
+     ============================================================ */
+  document.querySelectorAll('.tab-btn').forEach(btn => {
+    btn.addEventListener('click', () => {
+      document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+      document.querySelectorAll('.tab-panel').forEach(p => p.classList.add('hidden'));
+      btn.classList.add('active');
+      document.getElementById('tab-' + btn.dataset.tab).classList.remove('hidden');
+      if (btn.dataset.tab === 'cover') renderCoverTab();
+    });
+  });
+
+  /* ============================================================
+     1. BEFORE YOU LEAVE (existing feature, unchanged)
+     ============================================================ */
+  const items = document.querySelectorAll('.check-item');
+  const progressFill = document.getElementById('progressFill');
+  const checklistCount = document.getElementById('checklistCount');
+  const handoverBtn = document.getElementById('handoverBtn');
+  const statusPill = document.getElementById('statusPill');
+  const statusText = document.getElementById('statusText');
+
+  function updateProgress() {
+    const total = items.length;
+    const done = document.querySelectorAll('.check-item.done').length;
+    checklistCount.textContent = done + ' / ' + total;
+    progressFill.style.width = (done / total * 100) + '%';
+    handoverBtn.disabled = done < total;
+  }
+  items.forEach(item => item.addEventListener('click', () => { item.classList.toggle('done'); updateProgress(); }));
+
+  function sendHandover() {
+    DB.handover = { status: 'Sent', sentDate: fmtISO(DEMO_TODAY), acceptedBy: null, acceptedDate: null };
+    logHistory('Handover sent', 'Aida', 'Sent to ' + DB.coverAssignments.main.coverPerson);
+    statusText.textContent = 'Handover sent — waiting for acceptance';
+    handoverBtn.textContent = 'Handover sent ✓';
+    handoverBtn.disabled = true;
+    renderCoverTab();
+  }
+
+  handoverBtn.addEventListener('click', () => {
+    if (handoverBtn.disabled) return;
+    const warnings = checkHandoverReadiness();
+    if (!warnings.length) { sendHandover(); return; }
+    openGenericSheet(`
+      <h3>✨ Before you go</h3>
+      <p class="voice-sub">${warnings.length} thing${warnings.length === 1 ? '' : 's'} might need your attention:</p>
+      ${warnings.map(w => `<div class="precheck-item">⚠ ${w}</div>`).join('')}
+      <div class="voice-actions" style="margin-top:14px;">
+        <button class="vbtn-edit" id="precheckReviewBtn">Review</button>
+        <button class="vbtn-save" id="precheckCompleteBtn">Complete anyway</button>
+      </div>
+    `);
+    document.getElementById('precheckReviewBtn').addEventListener('click', closeVoiceModal);
+    document.getElementById('precheckCompleteBtn').addEventListener('click', () => { closeVoiceModal(); sendHandover(); });
+  });
+  updateProgress();
+
+  /* ============================================================
+     2. ASSIGN YOUR COVER
+     ============================================================ */
+  const coverConfirm = document.getElementById('coverConfirm');
+  document.getElementById('saveCoverBtn').addEventListener('click', () => {
+    const name = document.getElementById('coverName').value.trim() || 'Unassigned';
+    const email = document.getElementById('coverEmail').value.trim();
+    const start = document.getElementById('coverStart').value || DB.coverAssignments.main.start;
+    const end = document.getElementById('coverEnd').value || DB.coverAssignments.main.end;
+    const backupPerson = document.getElementById('backupName').value.trim();
+    const backupEmail = document.getElementById('backupEmail').value.trim();
+    const capacityRaw = document.getElementById('capacityInput').value;
+    const capacityHoursPerWeek = capacityRaw === '' ? null : Number(capacityRaw);
+    const nameChanged = name !== DB.coverAssignments.main.coverPerson;
+    const backupChanged = backupPerson !== DB.coverAssignments.main.backupPerson;
+    DB.coverAssignments.main = {
+      coverPerson: name, coverEmail: email, start, end, backupPerson, backupEmail,
+      backupStatus: backupChanged ? 'none' : DB.coverAssignments.main.backupStatus,
+      capacityHoursPerWeek, capacityStatus: 'Unknown'
+    };
+    // Changing who is asked, or re-proposing after a decline/acceptance, starts a fresh request cycle.
+    if (nameChanged && DB.handover.status !== 'Not sent') {
+      DB.handover = { status: 'Not sent', sentDate: null, acceptedBy: null, acceptedDate: null, declineReason: null, declinedDate: null, summaryConfirmed: false };
+      handoverBtn.textContent = 'Complete handover';
+      handoverBtn.disabled = document.querySelectorAll('.check-item.done').length < items.length;
+      statusText.textContent = 'Preparing to leave';
+      statusPill.classList.remove('is-back');
+    }
+    logHistory('Cover proposed', 'Aida', name + (backupPerson ? ' (backup: ' + backupPerson + ')' : ''));
+    coverConfirm.textContent = coverStatusPrefix().text + ': ' + name + (backupPerson ? ' · Backup noted: ' + backupPerson : '') + '. Send the handover to request acceptance.';
+    coverConfirm.classList.add('show');
+    renderProjectMiniList();
+    renderCoverTab();
+    renderTeamTable();
+    renderBackupPanel();
+    showToast('Cover proposal saved');
+  });
+
+  function renderBackupPanel() {
+    const wrap = document.getElementById('backupStatusPanel');
+    if (!wrap) return;
+    const main = DB.coverAssignments.main;
+    if (!main.backupPerson) { wrap.innerHTML = ''; return; }
+    if (main.backupStatus === 'none') {
+      wrap.innerHTML = `<div class="info-note">Backup noted: ${main.backupPerson} — not requested to take over anything.
+        <button type="button" class="link-back" id="requestBackupBtn" style="display:block;margin-top:6px;">⚠ Primary unavailable — request backup instead</button></div>`;
+      document.getElementById('requestBackupBtn').addEventListener('click', () => {
+        main.backupStatus = 'requested';
+        logHistory('Backup requested', 'Aida', main.backupPerson + ' asked to take over from ' + main.coverPerson);
+        showToast('Backup requested (simulated)');
+        renderBackupPanel();
+      });
+    } else if (main.backupStatus === 'requested') {
+      wrap.innerHTML = `<div class="info-note">⏳ Requested — waiting for ${main.backupPerson} to respond. Requested by Aida.
+        <div class="mini-row-toggles" style="margin-top:6px;">
+          <button type="button" id="backupConfirmBtn">Simulate: backup confirms<span class="simulate-tag">SIMULATED</span></button>
+          <button type="button" id="backupDeclineBtn">Simulate: backup declines<span class="simulate-tag">SIMULATED</span></button>
+        </div></div>`;
+      document.getElementById('backupConfirmBtn').addEventListener('click', () => {
+        main.backupStatus = 'confirmed';
+        logHistory('Backup confirmed', main.backupPerson, 'Active in place of ' + main.coverPerson);
+        showToast('Backup confirmed (simulated)');
+        renderBackupPanel(); renderCoverTab(); renderTeamTable();
+      });
+      document.getElementById('backupDeclineBtn').addEventListener('click', () => {
+        main.backupStatus = 'declined';
+        logHistory('Backup declined', main.backupPerson, '');
+        showToast('Backup declined (simulated)');
+        renderBackupPanel();
+      });
+    } else if (main.backupStatus === 'confirmed') {
+      wrap.innerHTML = `<div class="accepted-line">✓ ${main.backupPerson} confirmed as active cover in place of ${main.coverPerson}.</div>`;
+    } else if (main.backupStatus === 'declined') {
+      wrap.innerHTML = `<div class="decline-banner"><strong>✗ ${main.backupPerson} declined to cover.</strong>Assign someone else as primary or backup.</div>`;
+    }
+  }
+  renderBackupPanel();
+
+  function coverOptionsFor(pid) {
+    const names = new Set([DB.coverAssignments.main.coverPerson, 'Maria Keller', 'Jonas Weber', 'Elena Brandt']);
+    return Array.from(names);
+  }
+
+  function renderTeamTable() {
+    const wrap = document.getElementById('teamTable');
+    if (!wrap) return;
+    const rows = [];
+    const aidaStatus = DB.handover.status === 'Accepted' || DB.handover.status === 'Closed'
+      ? `<span class="tstatus accepted">✓ Accepted</span>`
+      : DB.handover.status === 'Sent' ? `<span class="tstatus waiting">⏳ Awaiting acceptance</span>` : `<span class="tstatus waiting">— Not sent</span>`;
+    rows.push(`<div class="team-row"><div><div class="tname">Aida</div><div class="tdates">${fmtLong(DB.coverAssignments.main.start)} – ${fmtLong(DB.coverAssignments.main.end)} · Cover: ${DB.coverAssignments.main.coverPerson}</div></div>${aidaStatus}</div>`);
+    DB.team.forEach(t => {
+      const st = t.accepted ? `<span class="tstatus accepted">✓ Accepted</span>` : `<span class="tstatus waiting">⏳ Awaiting acceptance</span>`;
+      rows.push(`<div class="team-row"><div><div class="tname">${t.name}</div><div class="tdates">${fmtLong(t.leaveStart)} – ${fmtLong(t.leaveEnd)} · Cover: ${t.primaryCover}</div></div>${st}</div>`);
+    });
+    wrap.innerHTML = rows.join('');
+  }
+  renderTeamTable();
+
+  document.getElementById('usePreviousBtn').addEventListener('click', () => {
+    let count = 0;
+    DB_PREVIOUS_HANDOVER.context.forEach(c => {
+      const proj = DB.projects.find(p => p.name === c.projectName);
+      if (proj) { seedContext({ projectId: proj.id, text: c.text, addedBy: 'Aida', createdDate: fmtISO(DEMO_TODAY), needsReview: true }); count++; }
+    });
+    DB_PREVIOUS_HANDOVER.resources.forEach(r => {
+      const proj = DB.projects.find(p => p.name === r.projectName);
+      if (proj) { seedResource({ projectId: proj.id, title: r.title, resourceType: r.resourceType, urlOrFileRef: '#', description: '', addedBy: 'Aida', createdDate: fmtISO(DEMO_TODAY), needsReview: true }); count++; }
+    });
+    DB_PREVIOUS_HANDOVER.contingencies.forEach(c => {
+      const proj = DB.projects.find(p => p.name === c.projectName);
+      if (proj) { seedContingency({ projectId: proj.id, trigger: c.trigger, action: c.action, contact: c.contact, resource: c.resource, addedBy: 'Aida', createdDate: fmtISO(DEMO_TODAY), needsReview: true }); count++; }
+    });
+    showToast(`Copied ${count} items from your previous handover — please review`);
+    expandedProjects.add('p1');
+    expandedProjects.add('p2');
+    renderProjectMiniList();
+  });
+
+  const expandedProjects = new Set();
+  const openDocForms = new Set();
+  const openLinkForms = new Set();
+  const openDependencyForms = new Set();
+  const openContingencyForms = new Set();
+
+  function taskTargetOptions(pid) {
+    return DB.tasks.filter(t => t.projectId === pid)
+      .map(t => `<option value="${t.id}">Task: ${t.title}</option>`).join('');
+  }
+
+  function renderProjectMiniList() {
+    const wrap = document.getElementById('projectMiniList');
+    wrap.innerHTML = '';
+    DB.projects.forEach(p => {
+      const current = coverForProject(p.id);
+      const expanded = expandedProjects.has(p.id);
+      const card = document.createElement('div');
+      card.className = 'project-card' + (expanded ? ' expanded' : '');
+      const opts = coverOptionsFor(p.id).map(n =>
+        `<option value="${n}" ${n === current ? 'selected' : ''}>${n}</option>`
+      ).join('');
+      const resources = resourcesForProject(p.id);
+      const resourcesHtml = resources.length
+        ? resources.map(resourceItemHtml).join('')
+        : `<p class="resource-empty">No documents or links added yet.</p>`;
+      const projectTasks = DB.tasks.filter(t => t.projectId === p.id);
+      const contextEntries = contextForProject(p.id);
+      const projectQuestions = questionsForProject(p.id).filter(q => !q.taskId);
+
+      card.innerHTML = `
+        <div class="project-card-head">
+          <div>
+            <div class="pname">${p.name}</div>
+            <div class="pcover">${coverStatusHtml(current)}</div>
+          </div>
+          <div class="project-card-head-right">
+            <select data-project="${p.id}">${opts}</select>
+            <svg class="chevron" viewBox="0 0 16 16" fill="none"><path d="M4 6l4 4 4-4" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          </div>
+        </div>
+        <div class="project-card-body">
+          <p class="handover-question">Does your cover person have everything needed to continue this work?</p>
+          <button class="voice-btn block project-speak-btn" data-project="${p.id}" style="margin-bottom:14px;">🎙️ Speak project handover</button>
+
+          <div class="resources-label">🧠 What should your cover know?</div>
+          <div class="resource-list">${contextEntries.length ? contextEntries.map(contextItemHtml).join('') : '<p class="resource-empty">Nothing noted yet.</p>'}</div>
+          <div class="textarea-with-mic" style="margin-top:8px;">
+            <textarea class="ctx-input" id="ctx-input-${p.id}" placeholder="Stakeholder sensitivities, informal agreements, background..."></textarea>
+            <button type="button" class="voice-btn-inline mic-ctx" data-project="${p.id}" title="Dictate">🎙️</button>
+          </div>
+          <button class="primary-btn ctx-save-btn" data-project="${p.id}" style="margin-top:8px;">Save context</button>
+
+          <div class="resources-label" style="margin-top:16px;">📎 Documents &amp; Links</div>
+          <div class="resource-list">${resourcesHtml}</div>
+          <div class="add-resource-row">
+            <button class="add-doc-btn" data-project="${p.id}">+ Add document</button>
+            <button class="add-link-btn" data-project="${p.id}">+ Add link</button>
+          </div>
+          <div class="resource-form ${openDocForms.has(p.id) ? '' : 'hidden'}" id="doc-form-${p.id}">
+            <div class="form-row"><label>Document title</label><input type="text" class="rf-title" placeholder="e.g. Project Plan.docx"></div>
+            <div class="form-row"><label>Upload / attach file</label><input type="file" class="rf-file" accept=".doc,.docx,.xls,.xlsx,.ppt,.pptx,.pdf"></div>
+            <div class="form-row"><label>Description (optional)</label>
+              <div class="textarea-with-mic"><textarea class="rf-desc" placeholder="What is this document?"></textarea><button type="button" class="voice-btn-inline mic-rf-desc" title="Dictate">🎙️</button></div>
+            </div>
+            <div class="form-row"><label>Applies to</label><select class="rf-target"><option value="">Whole project</option>${taskTargetOptions(p.id)}</select></div>
+            <button class="primary-btn rf-save-doc" data-project="${p.id}">Save document</button>
+          </div>
+          <div class="resource-form ${openLinkForms.has(p.id) ? '' : 'hidden'}" id="link-form-${p.id}">
+            <div class="form-row"><label>Link title</label><input type="text" class="rf-title" placeholder="e.g. Project SharePoint"></div>
+            <div class="form-row"><label>URL</label><input type="url" class="rf-url" placeholder="https://..."></div>
+            <div class="form-row"><label>Description (optional)</label>
+              <div class="textarea-with-mic"><textarea class="rf-desc" placeholder="What is this link for?"></textarea><button type="button" class="voice-btn-inline mic-rf-desc" title="Dictate">🎙️</button></div>
+            </div>
+            <div class="form-row"><label>Applies to</label><select class="rf-target"><option value="">Whole project</option>${taskTargetOptions(p.id)}</select></div>
+            <button class="primary-btn rf-save-link" data-project="${p.id}">Save link</button>
+          </div>
+
+          <div class="resources-label" style="margin-top:16px;">❓ Questions from your cover</div>
+          <div id="project-questions-${p.id}">${questionBlockHtml(projectQuestions)}</div>
+
+          <div class="resources-label" style="margin-top:16px;">🛡️ Decision authority &amp; escalation</div>
+          <div class="mini-sub-form" style="border-top:none;padding-top:0;">
+            <label>What your cover is allowed to decide</label>
+            <input type="text" class="da-allowed" data-project="${p.id}" value="${escapeAttr(p.allowedDecisions || '')}" placeholder="e.g. Minor scope clarifications">
+            <label>Approval / spending limit</label>
+            <input type="text" class="da-limit" data-project="${p.id}" value="${escapeAttr(p.approvalLimit || '')}" placeholder="e.g. Up to €2,000">
+            <label>Escalation contact (above this limit)</label>
+            <input type="text" class="da-escalation" data-project="${p.id}" value="${escapeAttr(p.escalationContact || '')}" placeholder="Who to go to instead">
+            <button type="button" class="mini-sub-save da-save-btn" data-project="${p.id}">Save decision authority</button>
+          </div>
+
+          <div class="resources-label" style="margin-top:16px;">✅ Tasks in this project</div>
+          <div class="mini-list">
+            ${projectTasks.map(t => `
+              <div class="mini-row" id="task-mini-${t.id}">
+                <div class="mini-row-top">
+                  <div>
+                    <div class="mini-row-title">${t.title}</div>
+                    <div class="mini-row-sub">Deadline: ${fmtLong(t.deadline)} · ${t.status} · Effort: <input type="number" class="task-effort-input" data-task="${t.id}" value="${t.estimatedEffort || ''}" style="width:38px;background:var(--surface);border:1px solid var(--surface-line);border-radius:6px;color:var(--text);font-size:11px;padding:2px 4px;">h</div>
+                  </div>
+                  <select class="task-crit-select" data-task="${t.id}">
+                    <option value="FYI" ${t.criticality === 'FYI' ? 'selected' : ''}>⚪ FYI</option>
+                    <option value="Important" ${t.criticality === 'Important' ? 'selected' : ''}>🟡 Important</option>
+                    <option value="Critical" ${t.criticality === 'Critical' ? 'selected' : ''}>🔴 Critical</option>
+                  </select>
+                </div>
+                ${dependencyForTask(t) ? dependencyNoteHtml(dependencyForTask(t)) : ''}
+                ${contingenciesForTask(t).filter(c => c.taskId === t.id).map(contingencyNoteHtml).join('')}
+                ${questionBlockHtml(questionsForTask(t))}
+                <div class="mini-row-toggles">
+                  <button type="button" class="toggle-dep-btn" data-task="${t.id}">⏸ ${dependencyForTask(t) ? 'Edit dependency' : 'Add dependency'}</button>
+                  <button type="button" class="toggle-cnt-btn" data-task="${t.id}">🆘 If this happens</button>
+                </div>
+                <div class="mini-sub-form ${openDependencyForms.has(t.id) ? '' : 'hidden'}" id="dep-form-${t.id}">
+                  <label>Waiting for / depends on</label>
+                  <input type="text" class="dep-name" data-task="${t.id}" placeholder="e.g. Legal approval">
+                  <label>Person / team</label>
+                  <input type="text" class="dep-owner" data-task="${t.id}" placeholder="e.g. Legal Team">
+                  <label>Expected date</label>
+                  <input type="date" class="dep-date" data-task="${t.id}">
+                  <label>Impact if delayed</label>
+                  <textarea class="dep-impact" data-task="${t.id}" placeholder="What happens if this is late?"></textarea>
+                  <button type="button" class="mini-sub-save dep-save-btn" data-task="${t.id}">Save dependency</button>
+                </div>
+                <div class="mini-sub-form ${openContingencyForms.has(t.id) ? '' : 'hidden'}" id="cnt-form-${t.id}">
+                  <label>If this happens…</label>
+                  <div class="textarea-with-mic"><textarea class="cnt-trigger" data-task="${t.id}" placeholder="e.g. Legal rejects approval"></textarea><button type="button" class="voice-btn-inline mic-cnt-trigger" data-task="${t.id}" title="Dictate">🎙️</button></div>
+                  <label>Then do this</label>
+                  <div class="textarea-with-mic"><textarea class="cnt-action" data-task="${t.id}" placeholder="e.g. Pause rollout and contact Maria"></textarea><button type="button" class="voice-btn-inline mic-cnt-action" data-task="${t.id}" title="Dictate">🎙️</button></div>
+                  <label>Contact</label>
+                  <input type="text" class="cnt-contact" data-task="${t.id}" placeholder="Who to reach out to">
+                  <label>Resource (optional)</label>
+                  <input type="text" class="cnt-resource" data-task="${t.id}" placeholder="e.g. Legal Escalation Process">
+                  <button type="button" class="mini-sub-save cnt-save-btn" data-task="${t.id}">Save contingency</button>
+                </div>
+              </div>
+            `).join('')}
+          </div>
+        </div>
+      `;
+
+      card.querySelector('.project-card-head').addEventListener('click', (e) => {
+        if (e.target.closest('select')) return;
+        if (expandedProjects.has(p.id)) expandedProjects.delete(p.id); else expandedProjects.add(p.id);
+        renderProjectMiniList();
+      });
+      card.querySelector('select').addEventListener('click', (e) => e.stopPropagation());
+      card.querySelector('select').addEventListener('change', (e) => {
+        DB.coverAssignments.overrides[p.id] = e.target.value;
+        renderProjectMiniList();
+        renderCoverTab();
+      });
+      card.querySelector('.project-speak-btn').addEventListener('click', () => {
+        openVoiceModal({ mode: 'full', projectId: p.id });
+      });
+      card.querySelectorAll('.mic-rf-desc').forEach(btn => {
+        attachDictationMic(btn, btn.previousElementSibling);
+      });
+      card.querySelector('.add-doc-btn').addEventListener('click', () => {
+        if (openDocForms.has(p.id)) openDocForms.delete(p.id); else openDocForms.add(p.id);
+        openLinkForms.delete(p.id);
+        renderProjectMiniList();
+      });
+      card.querySelector('.add-link-btn').addEventListener('click', () => {
+        if (openLinkForms.has(p.id)) openLinkForms.delete(p.id); else openLinkForms.add(p.id);
+        openDocForms.delete(p.id);
+        renderProjectMiniList();
+      });
+      const docForm = card.querySelector('#doc-form-' + p.id);
+      docForm.querySelector('.rf-file').addEventListener('change', (e) => {
+        const titleInput = docForm.querySelector('.rf-title');
+        if (!titleInput.value && e.target.files[0]) titleInput.value = e.target.files[0].name;
+      });
+      docForm.querySelector('.rf-save-doc').addEventListener('click', () => {
+        const title = docForm.querySelector('.rf-title').value.trim();
+        if (!title) { showToast('Add a document title first'); return; }
+        const file = docForm.querySelector('.rf-file').files[0];
+        const ref = file ? URL.createObjectURL(file) : '#';
+        const target = docForm.querySelector('.rf-target').value || null;
+        seedResource({ projectId: p.id, taskId: target, resourceType: 'Document', title, urlOrFileRef: ref, description: docForm.querySelector('.rf-desc').value.trim(), addedBy: 'Aida', createdDate: fmtISO(DEMO_TODAY) });
+        logHistory('Resource added', 'Aida', title);
+        openDocForms.delete(p.id);
+        showToast('Document added');
+        renderProjectMiniList();
+        renderCoverTab();
+      });
+      const linkForm = card.querySelector('#link-form-' + p.id);
+      linkForm.querySelector('.rf-save-link').addEventListener('click', () => {
+        const title = linkForm.querySelector('.rf-title').value.trim();
+        const url = linkForm.querySelector('.rf-url').value.trim();
+        if (!title || !url) { showToast('Add a title and URL first'); return; }
+        const target = linkForm.querySelector('.rf-target').value || null;
+        seedResource({ projectId: p.id, taskId: target, resourceType: 'Link', title, urlOrFileRef: url, description: linkForm.querySelector('.rf-desc').value.trim(), addedBy: 'Aida', createdDate: fmtISO(DEMO_TODAY) });
+        logHistory('Resource added', 'Aida', title);
+        openLinkForms.delete(p.id);
+        showToast('Link added');
+        renderProjectMiniList();
+        renderCoverTab();
+      });
+
+      card.querySelectorAll('.mic-ctx').forEach(btn => attachDictationMic(btn, document.getElementById('ctx-input-' + p.id)));
+      card.querySelector('.ctx-save-btn').addEventListener('click', () => {
+        const val = document.getElementById('ctx-input-' + p.id).value.trim();
+        if (!val) { showToast('Type or dictate something first'); return; }
+        seedContext({ projectId: p.id, text: val, addedBy: 'Aida', createdDate: fmtISO(DEMO_TODAY) });
+        logHistory('Context added', 'Aida', p.name);
+        showToast('Context saved');
+        renderProjectMiniList();
+      });
+      card.querySelector('.da-save-btn').addEventListener('click', () => {
+        p.allowedDecisions = card.querySelector('.da-allowed').value.trim();
+        p.approvalLimit = card.querySelector('.da-limit').value.trim();
+        p.escalationContact = card.querySelector('.da-escalation').value.trim();
+        logHistory('Decision authority updated', 'Aida', p.name);
+        showToast('Decision authority saved');
+        renderCoverTab();
+      });
+      card.querySelectorAll('.task-effort-input').forEach(inp => {
+        inp.addEventListener('click', e => e.stopPropagation());
+        inp.addEventListener('change', () => {
+          const task = DB.tasks.find(t => t.id === inp.dataset.task);
+          task.estimatedEffort = inp.value === '' ? null : Number(inp.value);
+          renderCoverTab();
+        });
+      });
+      card.querySelectorAll('.task-crit-select').forEach(sel => sel.addEventListener('click', e => e.stopPropagation()));
+      card.querySelectorAll('.task-crit-select').forEach(sel => sel.addEventListener('change', () => {
+        const task = DB.tasks.find(t => t.id === sel.dataset.task);
+        task.criticality = sel.value;
+        logHistory('Criticality changed', 'Aida', task.title + ' → ' + sel.value);
+        renderProjectMiniList();
+        renderCoverTab();
+      }));
+      card.querySelectorAll('.toggle-dep-btn').forEach(btn => btn.addEventListener('click', () => {
+        const id = btn.dataset.task;
+        if (openDependencyForms.has(id)) openDependencyForms.delete(id); else openDependencyForms.add(id);
+        renderProjectMiniList();
+      }));
+      card.querySelectorAll('.toggle-cnt-btn').forEach(btn => btn.addEventListener('click', () => {
+        const id = btn.dataset.task;
+        if (openContingencyForms.has(id)) openContingencyForms.delete(id); else openContingencyForms.add(id);
+        renderProjectMiniList();
+      }));
+      card.querySelectorAll('.mic-cnt-trigger').forEach(btn => attachDictationMic(btn, document.querySelector(`.cnt-trigger[data-task="${btn.dataset.task}"]`)));
+      card.querySelectorAll('.mic-cnt-action').forEach(btn => attachDictationMic(btn, document.querySelector(`.cnt-action[data-task="${btn.dataset.task}"]`)));
+      card.querySelectorAll('.dep-save-btn').forEach(btn => btn.addEventListener('click', () => {
+        const id = btn.dataset.task;
+        const task = DB.tasks.find(t => t.id === id);
+        const form = document.getElementById('dep-form-' + id);
+        const dependency = form.querySelector('.dep-name').value.trim();
+        if (!dependency) { showToast('Describe what you are waiting for first'); return; }
+        DB.dependencies = DB.dependencies.filter(d => d.taskId !== id);
+        seedDependency({
+          projectId: task.projectId, taskId: id, dependency,
+          owner: form.querySelector('.dep-owner').value.trim(),
+          expectedDate: form.querySelector('.dep-date').value || null,
+          impact: form.querySelector('.dep-impact').value.trim(),
+          addedBy: 'Aida', createdDate: fmtISO(DEMO_TODAY)
+        });
+        logHistory('Dependency added', 'Aida', task.title);
+        openDependencyForms.delete(id);
+        showToast('Dependency saved');
+        renderProjectMiniList();
+        renderCoverTab();
+      }));
+      card.querySelectorAll('.cnt-save-btn').forEach(btn => btn.addEventListener('click', () => {
+        const id = btn.dataset.task;
+        const task = DB.tasks.find(t => t.id === id);
+        const form = document.getElementById('cnt-form-' + id);
+        const trigger = form.querySelector('.cnt-trigger').value.trim();
+        const action = form.querySelector('.cnt-action').value.trim();
+        if (!trigger || !action) { showToast('Fill in both the trigger and the action'); return; }
+        seedContingency({
+          projectId: task.projectId, taskId: id, trigger, action,
+          contact: form.querySelector('.cnt-contact').value.trim(),
+          resource: form.querySelector('.cnt-resource').value.trim(),
+          addedBy: 'Aida', createdDate: fmtISO(DEMO_TODAY)
+        });
+        logHistory('Contingency added', 'Aida', task.title);
+        openContingencyForms.delete(id);
+        showToast('Contingency saved');
+        renderProjectMiniList();
+        renderCoverTab();
+      }));
+      card.querySelectorAll('.answer-toggle-btn').forEach(btn => btn.addEventListener('click', () => {
+        const id = btn.dataset.question;
+        if (openAnswerForms.has(id)) openAnswerForms.delete(id); else openAnswerForms.add(id);
+        renderProjectMiniList();
+      }));
+      card.querySelectorAll('.answer-save-btn').forEach(btn => btn.addEventListener('click', () => {
+        const id = btn.dataset.question;
+        const q = DB.questions.find(x => x.id === id);
+        const val = document.querySelector(`.ans-input[data-question="${id}"]`).value.trim();
+        if (!val) { showToast('Type an answer first'); return; }
+        q.status = 'Answered'; q.answer = val; q.answeredBy = 'Aida'; q.answeredDate = fmtISO(DEMO_TODAY);
+        logHistory('Question answered', 'Aida', q.question);
+        openAnswerForms.delete(id);
+        showToast('Answer saved');
+        renderProjectMiniList();
+        renderCoverTab();
+      }));
+
+      wrap.appendChild(card);
+    });
+  }
+  renderProjectMiniList();
+
+  /* ============================================================
+     3. MY COVER — COVER DASHBOARD
+     ============================================================ */
+  const openUpdateForms = new Set();
+  const openResourcePanels = new Set();
+  const openTaskDocForms = new Set();
+  const openTaskLinkForms = new Set();
+  const openTaskDetails = new Set();
+  const openTaskQuestionForms = new Set();
+
+  function renderAcceptanceCard() {
+    const wrap = document.getElementById('acceptanceWrap');
+    const h = DB.handover;
+    if (h.status === 'Not sent') { wrap.innerHTML = ''; return; }
+    if (h.status === 'Sent') {
+      const projectCount = DB.projects.length;
+      const taskCount = DB.tasks.filter(t => t.status !== 'Completed').length;
+      const criticalCount = DB.tasks.filter(t => t.criticality === 'Critical' && t.status !== 'Completed').length;
+      const cap = capacityAssessment();
+      wrap.innerHTML = `
+        <div class="acceptance-card">
+          <p class="label">HANDOVER FROM</p>
+          <p class="name">Aida</p>
+          <div class="acceptance-stats">
+            <div><div class="n">${projectCount}</div><div class="l">Projects</div></div>
+            <div><div class="n">${taskCount}</div><div class="l">Tasks</div></div>
+            <div><div class="n">${criticalCount}</div><div class="l">Critical</div></div>
+          </div>
+          <div class="capacity-line${cap.overloaded ? ' overload' : ''}">
+            ${cap.capacity != null
+              ? `Estimated work: ${cap.totalEffort}h vs ${cap.capacity}h/week capacity (${cap.confirmed ? 'confirmed by you' : 'self-estimated by Aida, not yet confirmed'})${cap.overloaded ? ' — may be more than you can take on' : ''}`
+              : `Estimated work: ${cap.totalEffort}h · capacity not yet known`}
+          </div>
+          ${cap.absence ? `<div class="capacity-line conflict">⚠ Overlaps your own time off: ${fmtLong(cap.absence.start)} – ${fmtLong(cap.absence.end)}</div>` : ''}
+          <div class="acceptance-actions" style="margin-top:10px;">
+            <button id="reviewHandoverBtn">Review handover</button>
+            <button class="primary" id="acceptHandoverBtn">✓ Accept handover</button>
+            <button id="declineHandoverBtn">✗ Decline</button>
+            <button id="confirmCapacityBtn">${cap.confirmed ? '✓ Capacity confirmed' : 'Confirm my capacity'}<span class="simulate-tag">SIMULATED</span></button>
+            <button id="askQuestionTopBtn">? Ask a question</button>
+          </div>
+        </div>`;
+      document.getElementById('reviewHandoverBtn').addEventListener('click', () => {
+        openGenericSheet(`
+          <h3>Handover from Aida</h3>
+          <p class="voice-sub">${projectCount} projects · ${taskCount} open tasks · ${criticalCount} critical</p>
+          ${DB.projects.map(p => `<div class="info-note"><strong>${p.name}</strong><div class="meta">${coverStatusHtml(coverForProject(p.id))} · ${DB.tasks.filter(t => t.projectId === p.id).length} tasks${p.escalationContact ? ' · Escalate to: ' + p.escalationContact : ''}</div></div>`).join('')}
+          <div class="voice-actions" style="margin-top:14px;"><button class="vbtn-save" id="closeReviewBtn" style="flex:none;width:100%;">Close</button></div>
+        `);
+        document.getElementById('closeReviewBtn').addEventListener('click', closeVoiceModal);
+      });
+      document.getElementById('acceptHandoverBtn').addEventListener('click', () => {
+        h.status = 'Accepted';
+        h.acceptedBy = DB.coverAssignments.main.coverPerson;
+        h.acceptedDate = fmtISO(DEMO_TODAY);
+        h.declineReason = null;
+        logHistory('Handover accepted', h.acceptedBy, '');
+        statusPill.classList.add('is-back');
+        statusText.textContent = 'Accepted by ' + h.acceptedBy;
+        showToast('Handover accepted');
+        renderTeamTable();
+        renderCoverTab();
+        renderProjectMiniList();
+      });
+      document.getElementById('declineHandoverBtn').addEventListener('click', () => {
+        openGenericSheet(`
+          <h3>✗ Decline this handover</h3>
+          <p class="voice-sub">Aida will see this and needs to reassign cover — nothing is marked covered.</p>
+          <div class="voice-review-field"><label>Reason (optional)</label><textarea id="decline-reason" placeholder="e.g. Already fully booked that week"></textarea></div>
+          <div class="voice-actions"><button class="vbtn-edit" id="declineCancelBtn">Cancel</button><button class="vbtn-save" id="declineSaveBtn">Confirm decline</button></div>
+        `);
+        document.getElementById('declineCancelBtn').addEventListener('click', closeVoiceModal);
+        document.getElementById('declineSaveBtn').addEventListener('click', () => {
+          h.status = 'Declined';
+          h.declineReason = document.getElementById('decline-reason').value.trim();
+          h.declinedDate = fmtISO(DEMO_TODAY);
+          logHistory('Handover declined', DB.coverAssignments.main.coverPerson, h.declineReason || '');
+          closeVoiceModal();
+          showToast('Handover declined');
+          renderCoverTab();
+          renderProjectMiniList();
+          renderTeamTable();
+        });
+      });
+      document.getElementById('confirmCapacityBtn').addEventListener('click', () => {
+        if (DB.coverAssignments.main.capacityStatus === 'Confirmed') return;
+        DB.coverAssignments.main.capacityStatus = 'Confirmed';
+        logHistory('Capacity confirmed', DB.coverAssignments.main.coverPerson, cap.capacity + 'h/week');
+        showToast('Capacity confirmed (simulated — Maria would do this herself)');
+        renderCoverTab();
+      });
+      document.getElementById('askQuestionTopBtn').addEventListener('click', () => openAskQuestionSheet(null, null));
+    } else if (h.status === 'Declined') {
+      wrap.innerHTML = `<div class="decline-banner"><strong>✗ Declined by ${DB.coverAssignments.main.coverPerson}</strong>${h.declineReason ? h.declineReason : 'No reason given.'} · Go to Prepare Leave to assign someone else.</div>`;
+    } else if (h.status === 'Accepted') {
+      wrap.innerHTML = `<div class="accepted-line">✓ Handover accepted by ${h.acceptedBy} · ${fmtLong(h.acceptedDate)}</div>`;
+    } else {
+      wrap.innerHTML = '';
+    }
+  }
+
+  function routeForQuestion(pid, urgent) {
+    if (!urgent) return { to: 'Aida (on return)', simulated: false };
+    const project = DB.projects.find(p => p.id === pid);
+    if (project && project.escalationContact) return { to: project.escalationContact, simulated: true };
+    const main = DB.coverAssignments.main;
+    if (main.backupStatus === 'confirmed' && main.backupPerson) return { to: main.backupPerson + ' (backup)', simulated: true };
+    return { to: coverForProject(pid) + ' (active cover)', simulated: true };
+  }
+  function openAskQuestionSheet(projectId, taskId) {
+    openGenericSheet(`
+      <h3>? Ask a question</h3>
+      <p class="voice-sub">By default this waits for Aida's return. Mark it urgent to route it to whoever can act now instead.</p>
+      <div class="voice-review-field"><label>Question</label><textarea id="aq-question" placeholder="What do you need to know?"></textarea></div>
+      <div class="voice-review-field"><label>Urgency</label>
+        <div class="yn-toggle"><button type="button" class="aq-urgency" data-val="normal">Can wait for Aida</button><button type="button" class="aq-urgency" data-val="urgent">Urgent — need it now</button></div>
+      </div>
+      <div class="voice-actions"><button class="vbtn-edit" id="aqCancelBtn">Cancel</button><button class="vbtn-save" id="aqSaveBtn">Save question</button></div>
+    `);
+    document.getElementById('aqCancelBtn').addEventListener('click', closeVoiceModal);
+    const urgencyBtns = document.querySelectorAll('.aq-urgency');
+    urgencyBtns[0].classList.add('selected');
+    urgencyBtns.forEach(b => b.addEventListener('click', () => { urgencyBtns.forEach(x => x.classList.remove('selected')); b.classList.add('selected'); }));
+    document.getElementById('aqSaveBtn').addEventListener('click', () => {
+      const q = document.getElementById('aq-question').value.trim();
+      if (!q) { showToast('Type your question first'); return; }
+      const pid = projectId || (taskId ? DB.tasks.find(t => t.id === taskId).projectId : DB.projects[0].id);
+      const urgent = document.querySelector('.aq-urgency.selected').dataset.val === 'urgent';
+      const route = routeForQuestion(pid, urgent);
+      seedQuestion({ projectId: pid, taskId: taskId || null, question: q, askedBy: coverForProject(pid), date: fmtISO(DEMO_TODAY), urgent, routedTo: route.to });
+      logHistory('Question asked', coverForProject(pid), (urgent ? '[Urgent] ' : '') + q);
+      closeVoiceModal();
+      if (route.simulated) showToast(`📨 Simulated notification sent to ${route.to} — no real message was sent`);
+      else showToast("Question saved for Aida's return");
+      renderCoverTab();
+      renderProjectMiniList();
+    });
+  }
+
+  function renderCoverTab() {
+    document.getElementById('coveringForName').textContent = DB.coverAssignments.main.coverPerson.split(' ')[0] === 'Aida' ? 'Aida' : 'Aida';
+    document.getElementById('coveringForRange').textContent =
+      fmtLong(DB.coverAssignments.main.start) + ' – ' + fmtLong(DB.coverAssignments.main.end);
+    document.getElementById('coveringForBackup').textContent =
+      DB.coverAssignments.main.backupPerson ? `Backup: ${DB.coverAssignments.main.backupPerson}` : '';
+    renderAcceptanceCard();
+
+    const openTasks = DB.tasks.filter(t => t.status !== 'Completed');
+    const counts = { overdue: 0, 'due-today': 0, upcoming: 0, 'on-track': 0 };
+    openTasks.forEach(t => { const b = bucketFor(t); if (b) counts[b]++; });
+    const criticalCount = openTasks.filter(t => t.criticality === 'Critical').length;
+    document.getElementById('countOverdue').textContent = counts.overdue;
+    document.getElementById('countDueToday').textContent = counts['due-today'];
+    document.getElementById('countCritical').textContent = criticalCount;
+    document.getElementById('countUpcoming').textContent = counts.upcoming;
+
+    // Deadline reminders — fires exactly once, exactly 1 day before, no repeats.
+    const reminderWrap = document.getElementById('reminderBanners');
+    reminderWrap.innerHTML = '';
+    openTasks.filter(t => dayDiff(t.deadline) === 1 && !t.reminderSent).forEach(t => {
+      const b = document.createElement('div');
+      b.className = 'reminder-banner';
+      b.innerHTML = `
+        <strong>⏰ Deadline tomorrow</strong>
+        <span>${t.title} – ${projectName(t.projectId)}</span>
+        <span class="rb-sub">You are covering this task for Aida. Deadline: ${fmtLong(t.deadline)}</span>
+        <button class="rb-btn" data-task="${t.id}">Open task</button>
+      `;
+      b.querySelector('.rb-btn').addEventListener('click', () => {
+        t.reminderSent = true;
+        document.getElementById('task-card-' + t.id)?.scrollIntoView({ behavior: 'smooth', block: 'center' });
+        renderCoverTab();
+      });
+      reminderWrap.appendChild(b);
+    });
+
+    // Sort: overdue and critical items float to the top, then due-today > upcoming > on-track.
+    const order = { overdue: 0, 'due-today': 2, upcoming: 3, 'on-track': 4 };
+    function rankOf(t) {
+      const b = bucketFor(t);
+      if (b === 'overdue') return 0;
+      if (t.criticality === 'Critical') return 1;
+      return order[b];
+    }
+    const sorted = openTasks.slice().sort((a, b) => {
+      const ra = rankOf(a), rb = rankOf(b);
+      if (ra !== rb) return ra - rb;
+      return dayDiff(a.deadline) - dayDiff(b.deadline);
+    });
+
+    const listEl = document.getElementById('taskCardList');
+    listEl.innerHTML = '';
+    if (sorted.length === 0) {
+      listEl.innerHTML = '<div class="empty-note">Nothing needs attention. 🎉</div>';
+      return;
+    }
+
+    sorted.forEach(t => {
+      const b = bucketFor(t);
+      const card = document.createElement('div');
+      card.className = 'task-card' + (b === 'overdue' ? ' overdue' : '');
+      card.id = 'task-card-' + t.id;
+
+      const lastUpdate = DB.updates.filter(u => u.taskId === t.id).slice(-1)[0];
+      const taskRes = resourcesForTask(t);
+      const dep = dependencyForTask(t);
+      const project = DB.projects.find(pr => pr.id === t.projectId);
+      const cnts = contingenciesForTask(t);
+      const ctxs = contextForTask(t);
+      const qs = questionsForTask(t);
+      const detailOpen = openTaskDetails.has(t.id);
+
+      card.innerHTML = `
+        <div class="task-top">
+          <div>
+            <div class="task-project">${projectName(t.projectId).toUpperCase()}</div>
+            <div class="task-title">${t.title}</div>
+          </div>
+          <div class="badge-row">
+            <span class="badge ${b}">${bucketLabel(b)}</span>
+            ${t.criticality === 'Critical' ? `<span class="badge critical">${criticalityLabel(t.criticality)}</span>` : ''}
+          </div>
+        </div>
+        <div class="task-meta">
+          Deadline: ${fmtLong(t.deadline)} · ${coverStatusHtml(coverForProject(t.projectId))}
+          ${t.delegatedTo ? `<div>↪ Delegated to: ${t.delegatedTo}</div>` : ''}
+          ${t.handlingState === 'Deferred' ? `<div>⏳ Deferred until Aida returns${t.handlingReason ? ' — ' + t.handlingReason : ''}</div>` : ''}
+          ${t.handlingState === 'Paused' ? `<div>⏸ Paused${t.handlingReason ? ' — ' + t.handlingReason : ''}</div>` : ''}
+        </div>
+        ${t.criticality === 'Critical' && !isCoverConfirmed() ? `<div class="unconfirmed-critical">⚠ Critical task — cover not yet confirmed</div>` : ''}
+        ${dep ? `<div class="blocked-line">⏸ BLOCKED — Waiting for ${dep.dependency}</div>` : ''}
+        <div class="task-actions">
+          <button class="open-btn" data-task="${t.id}">${detailOpen ? 'Close' : 'Open'}</button>
+          <button class="update-btn" data-task="${t.id}">Update</button>
+          <button class="primary done-btn" data-task="${t.id}">Done</button>
+          <button class="resources-btn" data-task="${t.id}">📎 Resources (${taskRes.length})</button>
+        </div>
+        <div class="resource-panel ${detailOpen ? '' : 'hidden'}" id="task-details-${t.id}">
+          ${t.criticality !== 'FYI' ? `<div class="info-note">${criticalityLabel(t.criticality)}${dep || cnts.length ? '' : ' · no contingency needed'}</div>` : ''}
+          ${t.estimatedEffort ? `<div class="info-note">Estimated effort: ${t.estimatedEffort}h</div>` : ''}
+          ${(project && (project.allowedDecisions || project.approvalLimit || project.escalationContact)) ? `<div class="info-note">🛡️ ${project.allowedDecisions || 'No specific decisions pre-approved'}${project.approvalLimit ? ' · Limit: ' + project.approvalLimit : ''}${project.escalationContact ? ' · Escalate to: ' + project.escalationContact : ''}</div>` : ''}
+          ${dep ? dependencyNoteHtml(dep) : ''}
+          ${cnts.map(contingencyNoteHtml).join('')}
+          ${ctxs.length ? `<div class="resources-label" style="margin-top:2px;">🧠 Important context</div>${ctxs.map(contextItemHtml).join('')}` : ''}
+          ${lastUpdate ? `<div class="info-note">Last update: "${lastUpdate.description.length > 70 ? lastUpdate.description.slice(0, 70) + '…' : lastUpdate.description}" — ${lastUpdate.addedBy}</div>` : ''}
+          <div class="resources-label" style="margin-top:10px;">❓ Questions</div>
+          ${questionBlockHtml(qs)}
+          <button type="button" class="link-back ask-task-q-btn" data-task="${t.id}">+ Ask a question</button>
+          <div class="mini-row-toggles" style="margin-top:12px;">
+            <button type="button" class="handle-btn" data-task="${t.id}" data-mode="Delegated">↪ Delegate</button>
+            <button type="button" class="handle-btn" data-task="${t.id}" data-mode="Deferred">⏳ Defer until return</button>
+            <button type="button" class="handle-btn" data-task="${t.id}" data-mode="Paused">⏸ Pause</button>
+          </div>
+        </div>
+        <div class="resource-panel ${openResourcePanels.has(t.id) ? '' : 'hidden'}" id="resource-panel-${t.id}">
+          ${taskRes.length ? taskRes.map(resourceItemHtml).join('') : '<p class="resource-empty">No documents or links for this task yet.</p>'}
+          <div class="add-resource-row">
+            <button class="add-task-doc-btn" data-task="${t.id}">+ Add document</button>
+            <button class="add-task-link-btn" data-task="${t.id}">+ Add link</button>
+          </div>
+          <div class="resource-form ${openTaskDocForms.has(t.id) ? '' : 'hidden'}" id="task-doc-form-${t.id}">
+            <div class="form-row"><label>Document title</label><input type="text" class="trf-title" placeholder="e.g. Updated Budget.xlsx"></div>
+            <div class="form-row"><label>Upload / attach file</label><input type="file" class="trf-file" accept=".doc,.docx,.xls,.xlsx,.ppt,.pptx,.pdf"></div>
+            <div class="form-row"><label>Description (optional)</label>
+              <div class="textarea-with-mic"><textarea class="trf-desc" placeholder="What is this document?"></textarea><button type="button" class="voice-btn-inline mic-trf-desc" title="Dictate">🎙️</button></div>
+            </div>
+            <button class="primary-btn trf-save-doc" data-task="${t.id}">Save document</button>
+          </div>
+          <div class="resource-form ${openTaskLinkForms.has(t.id) ? '' : 'hidden'}" id="task-link-form-${t.id}">
+            <div class="form-row"><label>Link title</label><input type="text" class="trf-title" placeholder="e.g. Meeting Notes"></div>
+            <div class="form-row"><label>URL</label><input type="url" class="trf-url" placeholder="https://..."></div>
+            <div class="form-row"><label>Description (optional)</label>
+              <div class="textarea-with-mic"><textarea class="trf-desc" placeholder="What is this link for?"></textarea><button type="button" class="voice-btn-inline mic-trf-desc" title="Dictate">🎙️</button></div>
+            </div>
+            <button class="primary-btn trf-save-link" data-task="${t.id}">Save link</button>
+          </div>
+        </div>
+        <div class="update-form ${openUpdateForms.has(t.id) ? '' : 'hidden'}" id="update-form-${t.id}">
+          <button class="voice-btn block task-speak-btn" data-task="${t.id}" style="margin-bottom:4px;">🎙️ Speak update</button>
+          <div class="form-row">
+            <label>Type</label>
+            <select class="uf-type" data-task="${t.id}">
+              <option value="Update">Update</option>
+              <option value="Decision">Decision</option>
+              <option value="Action">Action</option>
+              <option value="Risk">Risk</option>
+            </select>
+          </div>
+          <div class="form-row">
+            <label>What happened?</label>
+            <div class="textarea-with-mic">
+              <textarea class="uf-desc" data-task="${t.id}" placeholder="Describe what happened..."></textarea>
+              <button type="button" class="voice-btn-inline mic-desc" data-task="${t.id}" title="Dictate">🎙️</button>
+            </div>
+          </div>
+          <div class="form-row">
+            <label>Action for returning colleague?</label>
+            <div class="yn-toggle">
+              <button type="button" class="uf-yn" data-val="No" data-task="${t.id}">No</button>
+              <button type="button" class="uf-yn" data-val="Yes" data-task="${t.id}">Yes</button>
+            </div>
+          </div>
+          <div class="form-row">
+            <label>Priority</label>
+            <select class="uf-priority" data-task="${t.id}">
+              <option value="Low">Low</option>
+              <option value="Medium" selected>Medium</option>
+              <option value="High">High</option>
+            </select>
+          </div>
+          <div class="form-row">
+            <label>New deadline (optional)</label>
+            <input type="date" class="uf-newdeadline" data-task="${t.id}">
+          </div>
+          <div class="decision-fields" id="decision-fields-${t.id}">
+            <div class="form-row">
+              <label>Decision</label>
+              <input type="text" class="uf-decision" data-task="${t.id}" placeholder="What was decided?">
+            </div>
+            <div class="form-row">
+              <label>Why was this decision made?</label>
+              <div class="textarea-with-mic">
+                <textarea class="uf-why" data-task="${t.id}" placeholder="Reasoning..."></textarea>
+                <button type="button" class="voice-btn-inline mic-why" data-task="${t.id}" title="Dictate">🎙️</button>
+              </div>
+            </div>
+            <div class="form-row">
+              <label>Decided by</label>
+              <input type="text" class="uf-decidedby" data-task="${t.id}" placeholder="Who decided?">
+            </div>
+            <div class="form-row">
+              <label>Impact</label>
+              <div class="textarea-with-mic">
+                <textarea class="uf-impact" data-task="${t.id}" placeholder="What does this change?"></textarea>
+                <button type="button" class="voice-btn-inline mic-impact" data-task="${t.id}" title="Dictate">🎙️</button>
+              </div>
+            </div>
+          </div>
+          <button class="primary-btn uf-save" data-task="${t.id}">Save update</button>
+        </div>
+      `;
+      listEl.appendChild(card);
+    });
+
+    // wire up events for this render pass
+    listEl.querySelectorAll('.task-speak-btn').forEach(btn => btn.addEventListener('click', () => {
+      openVoiceModal({ mode: 'update', taskId: btn.dataset.task });
+    }));
+    listEl.querySelectorAll('.mic-desc').forEach(btn => attachDictationMic(btn, document.querySelector(`.uf-desc[data-task="${btn.dataset.task}"]`)));
+    listEl.querySelectorAll('.mic-why').forEach(btn => attachDictationMic(btn, document.querySelector(`.uf-why[data-task="${btn.dataset.task}"]`)));
+    listEl.querySelectorAll('.mic-impact').forEach(btn => attachDictationMic(btn, document.querySelector(`.uf-impact[data-task="${btn.dataset.task}"]`)));
+    listEl.querySelectorAll('.open-btn').forEach(btn => btn.addEventListener('click', () => {
+      const id = btn.dataset.task;
+      if (openTaskDetails.has(id)) openTaskDetails.delete(id); else openTaskDetails.add(id);
+      renderCoverTab();
+    }));
+    listEl.querySelectorAll('.ask-task-q-btn').forEach(btn => btn.addEventListener('click', () => {
+      const id = btn.dataset.task;
+      const task = DB.tasks.find(t => t.id === id);
+      openAskQuestionSheet(task.projectId, id);
+    }));
+    listEl.querySelectorAll('.handle-btn').forEach(btn => btn.addEventListener('click', () => {
+      const id = btn.dataset.task;
+      const mode = btn.dataset.mode;
+      const task = DB.tasks.find(t => t.id === id);
+      const needsAssignee = mode === 'Delegated';
+      openGenericSheet(`
+        <h3>${mode === 'Delegated' ? '↪ Delegate this task' : mode === 'Deferred' ? '⏳ Defer until Aida returns' : '⏸ Pause this task'}</h3>
+        <p class="voice-sub">${task.title}</p>
+        ${needsAssignee ? `<div class="voice-review-field"><label>Delegate to</label><input id="handle-assignee" placeholder="Name"></div>` : ''}
+        <div class="voice-review-field"><label>Short reason</label><textarea id="handle-reason" placeholder="Why?"></textarea></div>
+        <div class="voice-actions"><button class="vbtn-edit" id="handleCancelBtn">Cancel</button><button class="vbtn-save" id="handleSaveBtn">Save</button></div>
+      `);
+      document.getElementById('handleCancelBtn').addEventListener('click', closeVoiceModal);
+      document.getElementById('handleSaveBtn').addEventListener('click', () => {
+        const reason = document.getElementById('handle-reason').value.trim();
+        if (needsAssignee) {
+          const assignee = document.getElementById('handle-assignee').value.trim();
+          if (!assignee) { showToast('Enter who this goes to'); return; }
+          task.delegatedTo = assignee;
+        }
+        task.handlingState = mode;
+        task.handlingReason = reason;
+        logHistory('Task ' + mode.toLowerCase(), coverForProject(task.projectId), task.title + (reason ? ' — ' + reason : ''));
+        closeVoiceModal();
+        showToast(mode + (needsAssignee ? ' to ' + task.delegatedTo : ''));
+        renderCoverTab();
+      });
+    }));
+    listEl.querySelectorAll('.answer-toggle-btn').forEach(btn => btn.addEventListener('click', () => {
+      const id = btn.dataset.question;
+      if (openAnswerForms.has(id)) openAnswerForms.delete(id); else openAnswerForms.add(id);
+      renderCoverTab();
+    }));
+    listEl.querySelectorAll('.answer-save-btn').forEach(btn => btn.addEventListener('click', () => {
+      const id = btn.dataset.question;
+      const q = DB.questions.find(x => x.id === id);
+      const val = document.querySelector(`.ans-input[data-question="${id}"]`).value.trim();
+      if (!val) { showToast('Type an answer first'); return; }
+      q.status = 'Answered'; q.answer = val; q.answeredBy = coverForProject(q.projectId); q.answeredDate = fmtISO(DEMO_TODAY);
+      logHistory('Question answered', q.answeredBy, q.question);
+      openAnswerForms.delete(id);
+      showToast('Answer saved');
+      renderCoverTab();
+    }));
+    listEl.querySelectorAll('.resources-btn').forEach(btn => btn.addEventListener('click', () => {
+      const id = btn.dataset.task;
+      if (openResourcePanels.has(id)) openResourcePanels.delete(id); else openResourcePanels.add(id);
+      renderCoverTab();
+    }));
+    listEl.querySelectorAll('.add-task-doc-btn').forEach(btn => btn.addEventListener('click', () => {
+      const id = btn.dataset.task;
+      if (openTaskDocForms.has(id)) openTaskDocForms.delete(id); else openTaskDocForms.add(id);
+      openTaskLinkForms.delete(id);
+      renderCoverTab();
+    }));
+    listEl.querySelectorAll('.add-task-link-btn').forEach(btn => btn.addEventListener('click', () => {
+      const id = btn.dataset.task;
+      if (openTaskLinkForms.has(id)) openTaskLinkForms.delete(id); else openTaskLinkForms.add(id);
+      openTaskDocForms.delete(id);
+      renderCoverTab();
+    }));
+    listEl.querySelectorAll('.trf-file').forEach(inp => inp.addEventListener('change', (e) => {
+      const form = e.target.closest('.resource-form');
+      const titleInput = form.querySelector('.trf-title');
+      if (!titleInput.value && e.target.files[0]) titleInput.value = e.target.files[0].name;
+    }));
+    listEl.querySelectorAll('.mic-trf-desc').forEach(btn => attachDictationMic(btn, btn.previousElementSibling));
+    listEl.querySelectorAll('.trf-save-doc').forEach(btn => btn.addEventListener('click', () => {
+      const id = btn.dataset.task;
+      const task = DB.tasks.find(t => t.id === id);
+      const form = document.getElementById('task-doc-form-' + id);
+      const title = form.querySelector('.trf-title').value.trim();
+      if (!title) { showToast('Add a document title first'); return; }
+      const file = form.querySelector('.trf-file').files[0];
+      const ref = file ? URL.createObjectURL(file) : '#';
+      seedResource({
+        projectId: task.projectId, taskId: task.id, resourceType: 'Document', title, urlOrFileRef: ref,
+        description: form.querySelector('.trf-desc').value.trim(), addedBy: coverForProject(task.projectId),
+        createdDate: fmtISO(DEMO_TODAY), addedDuringAbsence: true
+      });
+      openTaskDocForms.delete(id);
+      showToast('Document added');
+      renderCoverTab();
+    }));
+    listEl.querySelectorAll('.trf-save-link').forEach(btn => btn.addEventListener('click', () => {
+      const id = btn.dataset.task;
+      const task = DB.tasks.find(t => t.id === id);
+      const form = document.getElementById('task-link-form-' + id);
+      const title = form.querySelector('.trf-title').value.trim();
+      const url = form.querySelector('.trf-url').value.trim();
+      if (!title || !url) { showToast('Add a title and URL first'); return; }
+      seedResource({
+        projectId: task.projectId, taskId: task.id, resourceType: 'Link', title, urlOrFileRef: url,
+        description: form.querySelector('.trf-desc').value.trim(), addedBy: coverForProject(task.projectId),
+        createdDate: fmtISO(DEMO_TODAY), addedDuringAbsence: true
+      });
+      openTaskLinkForms.delete(id);
+      showToast('Link added');
+      renderCoverTab();
+    }));
+    listEl.querySelectorAll('.update-btn').forEach(btn => btn.addEventListener('click', () => {
+      const id = btn.dataset.task;
+      if (openUpdateForms.has(id)) openUpdateForms.delete(id); else openUpdateForms.add(id);
+      renderCoverTab();
+    }));
+    listEl.querySelectorAll('.done-btn').forEach(btn => btn.addEventListener('click', () => {
+      const id = btn.dataset.task;
+      const task = DB.tasks.find(t => t.id === id);
+      task.status = 'Completed';
+      task.completedDate = fmtISO(DEMO_TODAY);
+      task.completedBy = coverForProject(task.projectId);
+      logHistory('Task completed', task.completedBy, task.title);
+      showToast('Marked as done');
+      renderCoverTab();
+    }));
+    listEl.querySelectorAll('.uf-type').forEach(sel => sel.addEventListener('change', () => {
+      const id = sel.dataset.task;
+      document.getElementById('decision-fields-' + id).classList.toggle('show', sel.value === 'Decision');
+    }));
+    listEl.querySelectorAll('.uf-yn').forEach(btn => btn.addEventListener('click', () => {
+      const group = btn.parentElement;
+      group.querySelectorAll('.uf-yn').forEach(b => b.classList.remove('selected'));
+      btn.classList.add('selected');
+    }));
+    listEl.querySelectorAll('.uf-save').forEach(btn => btn.addEventListener('click', () => {
+      const id = btn.dataset.task;
+      const task = DB.tasks.find(t => t.id === id);
+      const form = document.getElementById('update-form-' + id);
+      const type = form.querySelector('.uf-type').value;
+      const desc = form.querySelector('.uf-desc').value.trim();
+      if (!desc) { showToast('Add a short description first'); return; }
+      const ynSelected = form.querySelector('.uf-yn.selected');
+      const actionRequired = ynSelected ? ynSelected.dataset.val === 'Yes' : false;
+      const priority = form.querySelector('.uf-priority').value;
+      const newDeadline = form.querySelector('.uf-newdeadline').value || null;
+
+      const update = {
+        projectId: task.projectId, taskId: task.id, type, description: desc,
+        actionRequired, priority, newDeadline, addedBy: coverForProject(task.projectId),
+        createdDate: fmtISO(DEMO_TODAY)
+      };
+      seedUpdate(update);
+      logHistory(type + ' added', update.addedBy, desc.slice(0, 60));
+
+      if (type === 'Decision') {
+        const decision = form.querySelector('.uf-decision').value.trim() || desc;
+        const why = form.querySelector('.uf-why').value.trim();
+        const decidedBy = form.querySelector('.uf-decidedby').value.trim() || update.addedBy;
+        const impact = form.querySelector('.uf-impact').value.trim();
+        seedDecision({ updateId: update.id, projectId: task.projectId, decision, why, decidedBy, impact, createdDate: fmtISO(DEMO_TODAY) });
+        logHistory('Decision recorded', decidedBy, decision.slice(0, 60));
+      }
+
+      if (newDeadline) { logHistory('Deadline changed', update.addedBy, task.title + ' → ' + fmtLong(newDeadline)); task.deadline = newDeadline; }
+
+      openUpdateForms.delete(id);
+      showToast('Update saved');
+      renderCoverTab();
+    }));
+  }
+
+  /* ============================================================
+     4. WELCOME BACK — DYNAMIC CATCH ME UP
+     ============================================================ */
+  const catchupBtn = document.getElementById('catchupBtn');
+  const catchupResults = document.getElementById('catchupResults');
+
+  function goToTask(taskId) {
+    const task = DB.tasks.find(t => t.id === taskId);
+    if (!task) return;
+    document.querySelector('.tab-btn[data-tab="cover"]').click();
+    openTaskDetails.add(taskId);
+    renderCoverTab();
+    setTimeout(() => document.getElementById('task-card-' + taskId)?.scrollIntoView({ behavior: 'smooth', block: 'center' }), 30);
+  }
+  function goToProject(projectId) {
+    document.querySelector('.tab-btn[data-tab="prepare"]').click();
+    expandedProjects.add(projectId);
+    renderProjectMiniList();
+    setTimeout(() => document.querySelector('#projectMiniList')?.scrollIntoView({ behavior: 'smooth', block: 'start' }), 30);
+  }
+
+  catchupBtn.addEventListener('click', () => {
+    renderCatchup();
+    catchupBtn.classList.add('hidden');
+    catchupResults.classList.remove('hidden');
+    // Per CHRO revision point 5: "Catch me up" only builds the summary.
+    // It must NOT jump straight to "All caught up" — that requires a
+    // separate, conscious confirmation from the returning person.
+    DB.handover.summaryConfirmed = false;
+    statusText.textContent = 'Summary ready — review before confirming';
+    document.getElementById('confirmCaughtUpBtn').classList.remove('hidden');
+    logHistory('Catch-up summary generated', 'Aida', 'Not yet reviewed');
+  });
+
+  document.getElementById('confirmCaughtUpBtn').addEventListener('click', () => {
+    const unresolved = DB.updates.filter(u => u.actionRequired && !u.resolved).length;
+    if (unresolved) {
+      openGenericSheet(`
+        <h3>Still ${unresolved} open ${unresolved === 1 ? 'action' : 'actions'}</h3>
+        <p class="voice-sub">You can still confirm "all caught up" — open actions stay visible as normal tasks either way. This just checks you've seen them.</p>
+        <div class="voice-actions" style="margin-top:14px;">
+          <button class="vbtn-edit" id="caughtUpBackBtn">Go back</button>
+          <button class="vbtn-save" id="caughtUpAnywayBtn">Confirm anyway</button>
+        </div>
+      `);
+      document.getElementById('caughtUpBackBtn').addEventListener('click', closeVoiceModal);
+      document.getElementById('caughtUpAnywayBtn').addEventListener('click', () => { closeVoiceModal(); confirmCaughtUp(); });
+    } else {
+      confirmCaughtUp();
+    }
+  });
+
+  function confirmCaughtUp() {
+    DB.handover.summaryConfirmed = true;
+    document.getElementById('confirmCaughtUpBtn').classList.add('hidden');
+    document.getElementById('reviewCloseBtn').classList.remove('hidden');
+    statusText.textContent = 'All caught up';
+    logHistory('Catch-up summary confirmed', 'Aida', 'Marked all caught up');
+    showToast('Marked as all caught up');
+  }
+
+  function renderCatchup() {
+    const changedProjectIds = new Set([
+      ...DB.updates.map(u => u.projectId),
+      ...DB.tasks.filter(t => t.status === 'Completed').map(t => t.projectId)
+    ]);
+    const decisionsMade = DB.decisions.length;
+    const tasksCompleted = DB.tasks.filter(t => t.status === 'Completed').length;
+    const openActionUpdates = DB.updates.filter(u => u.actionRequired);
+    const risks = DB.updates.filter(u => u.type === 'Risk').length;
+
+    function rank(p) { return { High: 3, Medium: 2, Low: 1 }[p] || 0; }
+    const needsAttention = openActionUpdates.slice().sort((a, b) => rank(b.priority) - rank(a.priority));
+    const whatChanged = DB.updates.filter(u => u.type === 'Update' && !u.actionRequired);
+    const completedTasks = DB.tasks.filter(t => t.status === 'Completed');
+    const newContext = DB.context.filter(c => c.addedDuringAbsence);
+    const newResources = DB.resources.filter(r => r.addedDuringAbsence);
+    const openQuestions = DB.questions.filter(q => q.status === 'Open');
+
+    let html = `
+      <div class="stats-row">
+        <div class="stat"><div class="stat-num">${changedProjectIds.size}</div><div class="stat-label">projects<br>changed</div></div>
+        <div class="stat"><div class="stat-num">${decisionsMade}</div><div class="stat-label">decisions<br>made</div></div>
+        <div class="stat"><div class="stat-num">${tasksCompleted}</div><div class="stat-label">tasks<br>completed</div></div>
+      </div>
+      <div class="stats-row row2">
+        <div class="stat"><div class="stat-num">${needsAttention.length}</div><div class="stat-label">actions<br>for you</div></div>
+        <div class="stat"><div class="stat-num">${risks}</div><div class="stat-label">risks /<br>issues</div></div>
+      </div>
+    `;
+
+    if (needsAttention.length) {
+      html += `<div class="catchup-section"><h4>🔴 Needs your attention</h4>`;
+      needsAttention.forEach(u => {
+        html += `<div class="detail-item"><span class="tag priority">${u.type.toUpperCase()}</span><div class="body">${u.description}<div class="meta">${projectName(u.projectId)} · logged by ${u.addedBy}</div>${u.taskId ? `<span class="link-back" data-goto-task="${u.taskId}">→ Open task</span>` : `<span class="link-back" data-goto-project="${u.projectId}">→ Open project</span>`}
+          ${u.resolved ? `<div class="meta" style="margin-top:4px;color:var(--moss);">✓ ${u.resolution.action}${u.resolution.assignee ? ' → ' + u.resolution.assignee : ''}${u.resolution.deferDate ? ' until ' + fmtLong(u.resolution.deferDate) : ''}</div>` : `
+          <div class="mini-row-toggles" style="margin-top:6px;">
+            <button type="button" class="catchup-resolve-btn" data-update="${u.id}" data-mode="Taken on">✓ Take on</button>
+            <button type="button" class="catchup-resolve-btn" data-update="${u.id}" data-mode="Delegated">↪ Delegate</button>
+            <button type="button" class="catchup-resolve-btn" data-update="${u.id}" data-mode="Deferred">⏳ Defer to date</button>
+          </div>`}
+        </div></div>`;
+      });
+      html += `</div>`;
+    }
+
+    if (openQuestions.length) {
+      html += `<div class="catchup-section"><h4>❓ Open questions from your cover</h4>`;
+      openQuestions.forEach(q => {
+        html += `<div class="detail-item"><span class="tag priority">?</span><div class="body">${q.question}<div class="meta">${projectName(q.projectId)} · asked by ${q.askedBy}</div><span class="link-back" data-goto-project="${q.projectId}">→ Answer it</span></div></div>`;
+      });
+      html += `</div>`;
+    }
+
+    if (whatChanged.length) {
+      html += `<div class="catchup-section"><h4>🟡 What changed</h4>`;
+      whatChanged.forEach(u => {
+        html += `<div class="detail-item"><span class="tag moved">UPDATE</span><div class="body">${u.description}<div class="meta">${projectName(u.projectId)} · logged by ${u.addedBy}</div>${u.taskId ? `<span class="link-back" data-goto-task="${u.taskId}">→ Open task</span>` : `<span class="link-back" data-goto-project="${u.projectId}">→ Open project</span>`}</div></div>`;
+      });
+      html += `</div>`;
+    }
+
+    if (DB.decisions.length) {
+      html += `<div class="catchup-section"><h4>⚖️ Decisions made</h4>`;
+      DB.decisions.forEach(d => {
+        html += `<div class="detail-item"><span class="tag decided">DECIDED</span><div class="body">${d.decision}<div class="meta">${projectName(d.projectId)} · why: ${d.why || '—'} · impact: ${d.impact || '—'} · by ${d.decidedBy}</div><span class="link-back" data-goto-project="${d.projectId}">→ Open project</span></div></div>`;
+      });
+      html += `</div>`;
+    }
+
+    if (completedTasks.length) {
+      html += `<div class="catchup-section"><h4>✅ Completed while you were away</h4>`;
+      completedTasks.forEach(t => {
+        html += `<div class="detail-item"><span class="tag decided">DONE</span><div class="body">${t.title}<div class="meta">${projectName(t.projectId)} · completed ${fmtLong(t.completedDate)} by ${t.completedBy}</div></div></div>`;
+      });
+      html += `</div>`;
+    }
+
+    if (newContext.length) {
+      html += `<div class="catchup-section"><h4>🧠 Important context</h4>`;
+      newContext.forEach(c => {
+        html += `<div class="detail-item"><span class="tag moved">NOTE</span><div class="body">${c.text}<div class="meta">${projectName(c.projectId)} · added by ${c.addedBy}</div><span class="link-back" data-goto-project="${c.projectId}">→ Open project</span></div></div>`;
+      });
+      html += `</div>`;
+    }
+
+    if (newResources.length) {
+      html += `<div class="catchup-section"><h4>📎 New resources</h4>
+        <p class="section-sub" style="display:block;margin:-4px 0 8px;">${newResources.length} new ${newResources.length === 1 ? 'item was' : 'items were'} added while you were away.</p>`;
+      newResources.forEach(r => { html += resourceItemHtml(r); });
+      html += `</div>`;
+    }
+
+    const remainingActions = needsAttention.filter(u => !u.resolved);
+    if (remainingActions.length) {
+      html += `<div class="catchup-section" id="nextActionsSection"><h4>➡️ Your next actions</h4>`;
+      remainingActions.forEach((u, i) => {
+        html += `<div class="detail-item"><span class="tag priority">${i + 1}</span><div class="body">${u.description}<div class="meta">${projectName(u.projectId)} · priority: ${u.priority}</div>${u.taskId ? `<span class="link-back" data-goto-task="${u.taskId}">→ Open task</span>` : `<span class="link-back" data-goto-project="${u.projectId}">→ Open project</span>`}</div></div>`;
+      });
+      html += `</div>`;
+    }
+
+    catchupResults.innerHTML = html;
+    catchupResults.querySelectorAll('[data-goto-task]').forEach(el => el.addEventListener('click', () => goToTask(el.dataset.gotoTask)));
+    catchupResults.querySelectorAll('[data-goto-project]').forEach(el => el.addEventListener('click', () => goToProject(el.dataset.gotoProject)));
+    catchupResults.querySelectorAll('.catchup-resolve-btn').forEach(btn => btn.addEventListener('click', () => {
+      const update = DB.updates.find(x => x.id === btn.dataset.update);
+      const mode = btn.dataset.mode;
+      const needsAssignee = mode === 'Delegated';
+      const needsDate = mode === 'Deferred';
+      openGenericSheet(`
+        <h3>${mode === 'Taken on' ? '✓ Take this on' : mode === 'Delegated' ? '↪ Delegate this' : '⏳ Defer to a date'}</h3>
+        <p class="voice-sub">${update.description}</p>
+        ${needsAssignee ? `<div class="voice-review-field"><label>Delegate to</label><input id="cu-assignee" placeholder="Name"></div>` : ''}
+        ${needsDate ? `<div class="voice-review-field"><label>Defer until</label><input id="cu-date" type="date"></div>` : ''}
+        <div class="voice-review-field"><label>Short note (optional)</label><textarea id="cu-reason" placeholder="Why / context"></textarea></div>
+        <div class="voice-actions"><button class="vbtn-edit" id="cuCancelBtn">Cancel</button><button class="vbtn-save" id="cuSaveBtn">Save</button></div>
+      `);
+      document.getElementById('cuCancelBtn').addEventListener('click', closeVoiceModal);
+      document.getElementById('cuSaveBtn').addEventListener('click', () => {
+        const reason = document.getElementById('cu-reason').value.trim();
+        let assignee = '', deferDate = '';
+        if (needsAssignee) {
+          assignee = document.getElementById('cu-assignee').value.trim();
+          if (!assignee) { showToast('Enter who this goes to'); return; }
+        }
+        if (needsDate) {
+          deferDate = document.getElementById('cu-date').value;
+          if (!deferDate) { showToast('Pick a date first'); return; }
+        }
+        update.resolved = true;
+        update.resolution = { action: mode, assignee, deferDate, reason, by: 'Aida', date: fmtISO(DEMO_TODAY) };
+        logHistory('Open action ' + mode.toLowerCase(), 'Aida', update.description.slice(0, 60) + (assignee ? ' → ' + assignee : '') + (deferDate ? ' until ' + deferDate : ''));
+        closeVoiceModal();
+        showToast('Saved');
+        renderCatchup();
+      });
+    }));
+  }
+
+  document.getElementById('reviewCloseBtn').addEventListener('click', () => {
+    const tasksCompleted = DB.tasks.filter(t => t.status === 'Completed').length;
+    const decisionsMade = DB.decisions.length;
+    const openActions = DB.updates.filter(u => u.actionRequired).length;
+    const stillOverdue = DB.tasks.filter(t => t.status !== 'Completed' && bucketFor(t) === 'overdue').length;
+    const newRes = DB.resources.filter(r => r.addedDuringAbsence).length;
+    const openQ = DB.questions.filter(q => q.status === 'Open').length;
+    const openTasks = DB.tasks.filter(t => t.status !== 'Completed');
+    const candidates = Array.from(new Set(['Aida', DB.coverAssignments.main.coverPerson, DB.coverAssignments.main.backupPerson].filter(Boolean)));
+    openGenericSheet(`
+      <h3>Review &amp; close leave</h3>
+      <p class="voice-sub">A last look before you close this leave out. Nothing gets deleted.</p>
+      <div class="metric-row"><span>✓ Tasks completed while away</span><span class="mval">${tasksCompleted}</span></div>
+      <div class="metric-row"><span>✓ Decisions made</span><span class="mval">${decisionsMade}</span></div>
+      <div class="metric-row"><span>✓ Open actions for you</span><span class="mval">${openActions}</span></div>
+      <div class="metric-row"><span>✓ Remaining overdue items</span><span class="mval">${stillOverdue}</span></div>
+      <div class="metric-row"><span>✓ New documents/resources</span><span class="mval">${newRes}</span></div>
+      <div class="metric-row"><span>✓ Open questions</span><span class="mval">${openQ}</span></div>
+      ${openTasks.length ? `
+        <p class="voice-sub" style="margin-top:12px;">Closing the leave doesn't remove open tasks — but each one needs a clear, confirmed owner before you close.</p>
+        <div class="close-owner-list">
+          ${openTasks.map(t => `
+            <div class="close-owner-row">
+              <div class="close-owner-title">${t.title} <span class="meta">(${projectName(t.projectId)})</span></div>
+              <select class="close-owner-select" data-task="${t.id}">
+                ${candidates.map(c => `<option value="${c}" ${t.owner === c ? 'selected' : ''}>${c}</option>`).join('')}
+              </select>
+            </div>`).join('')}
+        </div>
+      ` : `<p class="voice-sub" style="margin-top:12px;">No open tasks remain — everything is completed.</p>`}
+      <div class="voice-actions" style="margin-top:14px;">
+        <button class="vbtn-edit" id="closeReviewOnlyBtn">Not yet</button>
+        <button class="vbtn-save" id="closeHandoverBtn">✓ Close handover</button>
+      </div>
+    `);
+    document.getElementById('closeReviewOnlyBtn').addEventListener('click', closeVoiceModal);
+    document.getElementById('closeHandoverBtn').addEventListener('click', () => {
+      document.querySelectorAll('.close-owner-select').forEach(sel => {
+        const task = DB.tasks.find(t => t.id === sel.dataset.task);
+        if (task && sel.value && task.owner !== sel.value) {
+          logHistory('Owner assigned at close', 'Aida', task.title + ' → ' + sel.value);
+          task.owner = sel.value;
+        } else if (task) {
+          logHistory('Owner confirmed at close', 'Aida', task.title + ' stays with ' + task.owner);
+        }
+      });
+      DB.handover.status = 'Closed';
+      logHistory('Handover closed', 'Aida', openTasks.length ? openTasks.length + ' open task(s) carried forward with assigned owners' : 'No open tasks remained');
+      closeVoiceModal();
+      statusText.textContent = 'Leave closed';
+      showToast('Leave closed — open tasks kept their owners');
+      renderTeamTable();
+    });
+  });
+
+  document.getElementById('viewHistoryBtn').addEventListener('click', () => {
+    const items = DB.history.slice().reverse();
+    openGenericSheet(`
+      <h3>History</h3>
+      <p class="voice-sub">Every change, in order — not shown in the normal screens.</p>
+      ${items.length ? items.map(h => `<div class="history-item"><strong>${h.action}</strong> — ${h.changedBy}${h.detail ? ' · ' + h.detail : ''}<div>${fmtLong(h.changedDate)}</div></div>`).join('') : '<p class="resource-empty">Nothing logged yet.</p>'}
+      <div class="voice-actions" style="margin-top:14px;"><button class="vbtn-save" id="closeHistoryBtn" style="flex:none;width:100%;">Close</button></div>
+    `);
+    document.getElementById('closeHistoryBtn').addEventListener('click', closeVoiceModal);
+  });
+
+  // A single metric-row renderer so every rate is computed and displayed
+  // the same way: numerator/denominator shown, "No data" instead of a
+  // misleading 0% when the denominator is zero or the event never happened.
+  function rateRow(label, numerator, denominator, extraNote) {
+    const noData = !denominator || denominator === 0;
+    const pct = noData ? null : Math.round(numerator / denominator * 100);
+    return `<div class="metric-row"><span>${label}</span><span class="mval">${noData ? 'No data' : pct + '%'}</span></div>
+      <div class="metric-row" style="border-bottom:1px solid var(--surface-line);padding-top:0;"><span class="mnote" style="flex:1;">${noData ? 'No denominator yet' : numerator + ' of ' + denominator}${extraNote ? ' · ' + extraNote : ''}</span></div>`;
+  }
+  function countRow(label, value, note) {
+    return `<div class="metric-row"><span>${label}${note ? `<span class="mnote">${note}</span>` : ''}</span><span class="mval">${value}</span></div>`;
+  }
+
+  document.getElementById('viewAnalyticsBtn').addEventListener('click', () => {
+    // --- Handover preparation (what Aida set up before leaving) ---
+    const totalProjects = DB.projects.length;
+    const projectsWithContext = new Set(DB.context.map(c => c.projectId)).size;
+    const totalTasks = DB.tasks.length;
+    const tasksWithEffort = DB.tasks.filter(t => t.estimatedEffort != null).length;
+
+    // --- Cover acceptance (status of the ONE existing acceptance process) ---
+    const handoverEverSent = DB.handover.status !== 'Not sent';
+    const acceptanceNum = (DB.handover.status === 'Accepted' || DB.handover.status === 'Closed') ? 1 : 0;
+    const acceptanceDenom = handoverEverSent ? 1 : 0; // "No data" until a handover has actually been sent
+    const backupEverRequested = DB.coverAssignments.main.backupStatus && DB.coverAssignments.main.backupStatus !== 'none';
+    const backupConfirmedNum = DB.coverAssignments.main.backupStatus === 'confirmed' ? 1 : 0;
+    const backupDenom = backupEverRequested ? 1 : 0;
+
+    // --- Task progress (only meaningful once cover is actually confirmed) ---
+    const openTasksNow = DB.tasks.filter(t => t.status !== 'Completed');
+    const completedTasksNum = DB.tasks.filter(t => t.status === 'Completed').length;
+    const taskProgressDenom = totalTasks;
+    const overdueNow = openTasksNow.filter(t => bucketFor(t) === 'overdue').length;
+    const criticalUnconfirmed = DB.tasks.filter(t => t.criticality === 'Critical' && !isCoverConfirmed()).length;
+    const decisionsMade = DB.decisions.length;
+    const openActionsAfterReturn = DB.updates.filter(u => u.actionRequired && !u.resolved).length;
+
+    // --- Contradiction check: work logged as done "by cover" while the
+    // ONE acceptance process never actually reached "Accepted". This is a
+    // demo-data consistency flag, not a score. ---
+    const completedByNamedCover = DB.tasks.filter(t => t.status === 'Completed' && t.completedBy && t.completedBy !== 'Aida');
+    const contradiction = completedByNamedCover.length > 0 && !isCoverConfirmed();
+
+    openGenericSheet(`
+      <h3>Analytics</h3>
+      <p class="voice-sub">All numbers come from the same current data — no individual ranking or performance score.</p>
+
+      ${contradiction ? `<div class="metric-row flag" style="border:1px solid var(--amber);border-radius:10px;padding:8px;margin-top:8px;">⚠ ${completedByNamedCover.length} task(s) show work completed by a named cover, but the handover was never marked "Accepted". Treat this demo state as inconsistent.</div>` : ''}
+
+      <div class="analytics-group">
+        <p class="analytics-group-title">Handover preparation</p>
+        ${countRow('Projects in this leave', totalProjects)}
+        ${countRow('Projects with context notes', projectsWithContext)}
+        ${countRow('Tasks handed over', totalTasks)}
+        ${countRow('Tasks with an effort estimate', tasksWithEffort)}
+      </div>
+
+      <div class="analytics-group">
+        <p class="analytics-group-title">Cover acceptance</p>
+        ${rateRow('Primary cover acceptance rate', acceptanceNum, acceptanceDenom, handoverEverSent ? 'handover sent' : 'no handover sent yet')}
+        ${rateRow('Backup confirmation rate', backupConfirmedNum, backupDenom, backupEverRequested ? 'backup requested' : 'backup never requested')}
+        ${countRow('Critical tasks without confirmed cover', criticalUnconfirmed)}
+      </div>
+
+      <div class="analytics-group">
+        <p class="analytics-group-title">Task progress</p>
+        ${rateRow('Tasks completed', completedTasksNum, taskProgressDenom)}
+        ${countRow('Tasks overdue right now', overdueNow)}
+        ${countRow('Decisions made during absence', decisionsMade)}
+        ${countRow('Open actions still waiting on return', openActionsAfterReturn)}
+        ${countRow('Updates logged this leave', DB.updates.length)}
+      </div>
+
+      <div class="voice-actions" style="margin-top:14px;"><button class="vbtn-save" id="closeAnalyticsBtn" style="flex:none;width:100%;">Close</button></div>
+    `);
+    document.getElementById('closeAnalyticsBtn').addEventListener('click', closeVoiceModal);
+  });
+
+  /* ============================================================
+     5. VOICE INPUT — SPEAK YOUR HANDOVER
+     Optional everywhere: every field it fills stays manually
+     editable, and nothing is saved before the user confirms.
+     ============================================================ */
+  let voiceContext = null;      // { mode: 'full'|'update', projectId?, taskId? }
+  let currentRecognition = null;
+  const voiceSheet = document.getElementById('voiceSheet');
+  const voiceOverlay = document.getElementById('voiceOverlay');
+
+  function getSR() { return window.SpeechRecognition || window.webkitSpeechRecognition || null; }
+
+  let voiceConsentGiven = false;
+
+  function openVoiceModal(context) {
+    voiceContext = context;
+    voiceOverlay.classList.remove('hidden');
+    const SR = getSR();
+    if (!SR) { renderVoiceFallback("Voice input isn't available in this browser — type what you would say instead."); return; }
+    if (!voiceConsentGiven) { renderVoiceConsent(); return; }
+    startListening();
+  }
+
+  function renderVoiceConsent() {
+    voiceSheet.innerHTML = `
+      <h3>🎙️ Before you speak</h3>
+      <div class="voice-consent">
+        This prototype uses your <strong>browser's built-in speech recognition</strong> (the Web Speech API) to turn what you say into text. Your browser — not this app — sends the audio to its own speech-to-text provider (e.g. Google on Chrome) to transcribe it. This demo does not record, store, or transmit your voice anywhere else, and the transcript only leaves this screen once you review and confirm it below.
+      </div>
+      <div class="voice-actions">
+        <button class="vbtn-edit" id="voiceConsentCancelBtn">Cancel</button>
+        <button class="vbtn-save" id="voiceConsentStartBtn">🎙️ Start listening</button>
+      </div>
+    `;
+    document.getElementById('voiceConsentCancelBtn').addEventListener('click', closeVoiceModal);
+    document.getElementById('voiceConsentStartBtn').addEventListener('click', () => {
+      voiceConsentGiven = true;
+      startListening();
+    });
+  }
+
+  function startListening() {
+    renderVoiceListening();
+    try {
+      const SR = getSR();
+      const rec = new SR();
+      rec.lang = navigator.language || 'en-US';
+      rec.continuous = false;
+      rec.interimResults = false;
+      rec.maxAlternatives = 1;
+      let finalTranscript = '';
+      rec.onresult = (e) => {
+        for (let i = e.resultIndex; i < e.results.length; i++) {
+          if (e.results[i].isFinal) finalTranscript += e.results[i][0].transcript + ' ';
+        }
+      };
+      rec.onerror = () => { renderVoiceFallback("Didn't catch that — type what you would say instead."); };
+      rec.onend = () => {
+        if (finalTranscript.trim()) renderVoiceReview(finalTranscript.trim());
+        else renderVoiceFallback("Didn't catch anything — type what you would say instead.");
+      };
+      currentRecognition = rec;
+      rec.start();
+    } catch (e) {
+      renderVoiceFallback("Voice input isn't available right now — type what you would say instead.");
+    }
+  }
+
+  function closeVoiceModal() {
+    if (currentRecognition) { try { currentRecognition.stop(); } catch (e) {} currentRecognition = null; }
+    voiceOverlay.classList.add('hidden');
+    voiceSheet.innerHTML = '';
+    voiceContext = null;
+  }
+
+  // Generic bottom sheet, reusing the same overlay for non-voice content
+  // (pre-leave check, handover review, ask-question, history, analytics, return review).
+  function openGenericSheet(html) {
+    voiceContext = null;
+    voiceSheet.innerHTML = html;
+    voiceOverlay.classList.remove('hidden');
+  }
+
+  function renderVoiceListening() {
+    voiceSheet.innerHTML = `
+      <h3>🎙️ Listening…</h3>
+      <p class="voice-sub">Speak naturally — project, status, cover person, deadline, next steps, decisions.</p>
+      <div class="mic-circle listening">🎙️</div>
+      <p class="voice-status-text">Tap stop when you're done.</p>
+      <div class="voice-actions">
+        <button class="vbtn-edit" id="voiceCancelBtn">Cancel</button>
+        <button class="vbtn-save" id="voiceStopBtn">Stop</button>
+      </div>
+    `;
+    document.getElementById('voiceCancelBtn').addEventListener('click', closeVoiceModal);
+    document.getElementById('voiceStopBtn').addEventListener('click', () => {
+      if (currentRecognition) { try { currentRecognition.stop(); } catch (e) {} }
+    });
+  }
+
+  function renderVoiceFallback(message) {
+    voiceSheet.innerHTML = `
+      <h3>🎙️ Speak your update</h3>
+      <p class="voice-sub">${escapeHtml(message)}</p>
+      <div class="voice-fallback"><textarea id="voiceFallbackText" placeholder="e.g. Legal approved today, we started the rollout, Aida doesn't need to do anything..."></textarea></div>
+      <div class="voice-actions">
+        <button class="vbtn-edit" id="voiceCancelBtn">Cancel</button>
+        <button class="vbtn-save" id="voiceParseBtn">Parse</button>
+      </div>
+    `;
+    document.getElementById('voiceCancelBtn').addEventListener('click', closeVoiceModal);
+    document.getElementById('voiceParseBtn').addEventListener('click', () => {
+      const val = document.getElementById('voiceFallbackText').value.trim();
+      if (!val) { showToast('Type something first'); return; }
+      renderVoiceReview(val);
+    });
+  }
+
+  function wireTranscriptToggle(transcript) {
+    document.getElementById('voiceTranscriptToggle').addEventListener('click', () => {
+      document.getElementById('voiceTranscriptBox').classList.toggle('show');
+    });
+    document.getElementById('voiceEditBtn').addEventListener('click', () => {
+      document.getElementById('voiceTranscriptBox').classList.add('show');
+      document.getElementById('voiceTranscriptEdit').focus();
+    });
+    document.getElementById('voiceReparseBtn').addEventListener('click', () => {
+      const edited = document.getElementById('voiceTranscriptEdit').value.trim();
+      if (edited) renderVoiceReview(edited);
+    });
+  }
+
+  function renderVoiceReview(transcript) {
+    const info = extractInfo(transcript);
+
+    if (voiceContext.mode === 'full') {
+      const projectId = voiceContext.projectId || info.projectId || '';
+      const projectOptions = DB.projects.map(p => `<option value="${p.id}" ${p.id === projectId ? 'selected' : ''}>${p.name}</option>`).join('');
+      const status = info.waitingOn ? 'Waiting for ' + info.waitingOn : '';
+      const risk = info.waitingOn ? info.waitingOn + ' outstanding' : '';
+      voiceSheet.innerHTML = `
+        <h3>✨ I understood</h3>
+        <span class="voice-transcript-toggle" id="voiceTranscriptToggle">View / edit transcript</span>
+        <div class="voice-transcript-box" id="voiceTranscriptBox">
+          <textarea id="voiceTranscriptEdit">${escapeHtml(transcript)}</textarea>
+          <button class="voice-btn" id="voiceReparseBtn" style="margin-top:8px;">Re-parse</button>
+        </div>
+        <div class="voice-review-field"><label>Project</label><select id="vf-project"><option value="">Select project…</option>${projectOptions}</select></div>
+        <div class="voice-review-field"><label>Status</label><input id="vf-status" value="${escapeAttr(status)}"></div>
+        <div class="voice-review-field"><label>Cover person</label><input id="vf-cover" value="${escapeAttr(info.person || (projectId ? coverForProject(projectId) : DB.coverAssignments.main.coverPerson))}"></div>
+        <div class="voice-review-field"><label>Deadline</label><input type="date" id="vf-deadline" value="${info.date || ''}"></div>
+        <div class="voice-review-field"><label>Next action</label><textarea id="vf-nextaction">${escapeHtml(info.nextAction || '')}</textarea></div>
+        <div class="voice-review-field"><label>Decision</label><textarea id="vf-decision">${escapeHtml(info.decision || '')}</textarea></div>
+        <div class="voice-review-field"><label>Risk</label><textarea id="vf-risk">${escapeHtml(risk)}</textarea></div>
+        <div class="voice-review-field"><label>Important context</label><textarea id="vf-context">${escapeHtml(transcript)}</textarea></div>
+        <div class="voice-review-field"><label>Criticality</label>
+          <select id="vf-criticality">
+            <option value="FYI" ${info.criticality === 'FYI' ? 'selected' : ''}>⚪ FYI</option>
+            <option value="Important" ${info.criticality === 'Important' ? 'selected' : ''}>🟡 Important</option>
+            <option value="Critical" ${info.criticality === 'Critical' ? 'selected' : ''}>🔴 Critical</option>
+          </select>
+        </div>
+        <div class="voice-review-field"><label>If this happens (optional)</label><input id="vf-trigger" value="${escapeAttr(info.contingencyTrigger || '')}"></div>
+        <div class="voice-review-field"><label>Then do this (optional)</label><textarea id="vf-action">${escapeHtml(info.contingencyAction || '')}</textarea></div>
+        ${info.resourceMention ? `<div class="voice-resource-chip">📎 Resource mentioned: <strong>${escapeHtml(info.resourceMention)}</strong><button class="vrc-btn" id="voiceAddLinkBtn">+ Add link</button></div>` : ''}
+        <div class="voice-actions">
+          <button class="vbtn-edit" id="voiceEditBtn">Edit</button>
+          <button class="vbtn-save" id="voiceSaveBtn">Confirm &amp; Save</button>
+        </div>
+      `;
+      wireTranscriptToggle(transcript);
+      if (info.resourceMention) {
+        document.getElementById('voiceAddLinkBtn').addEventListener('click', () => {
+          const pid = document.getElementById('vf-project').value;
+          if (!pid) { showToast('Select a project first'); return; }
+          const mention = info.resourceMention;
+          closeVoiceModal();
+          expandedProjects.add(pid);
+          openLinkForms.add(pid);
+          renderProjectMiniList();
+          setTimeout(() => {
+            const inp = document.querySelector('#link-form-' + pid + ' .rf-title');
+            if (inp) inp.value = mention;
+            document.getElementById('link-form-' + pid)?.scrollIntoView({ behavior: 'smooth', block: 'center' });
+          }, 30);
+        });
+      }
+      document.getElementById('voiceSaveBtn').addEventListener('click', () => {
+        const pid = document.getElementById('vf-project').value;
+        if (!pid) { showToast('Select a project first'); return; }
+        const cover = document.getElementById('vf-cover').value.trim();
+        if (cover) DB.coverAssignments.overrides[pid] = cover;
+        const fStatus = document.getElementById('vf-status').value.trim();
+        const fDeadline = document.getElementById('vf-deadline').value || null;
+        const fNextAction = document.getElementById('vf-nextaction').value.trim();
+        const fDecision = document.getElementById('vf-decision').value.trim();
+        const fRisk = document.getElementById('vf-risk').value.trim();
+        const fContext = document.getElementById('vf-context').value.trim();
+        const fCriticality = document.getElementById('vf-criticality').value;
+        const fTrigger = document.getElementById('vf-trigger').value.trim();
+        const fAction = document.getElementById('vf-action').value.trim();
+
+        const type = fDecision ? 'Decision' : (fRisk ? 'Risk' : 'Update');
+        const parts = [];
+        if (fStatus) parts.push('Status: ' + fStatus);
+        if (fNextAction) parts.push('Next action: ' + fNextAction);
+        if (fRisk) parts.push('Risk: ' + fRisk);
+        if (fDeadline) parts.push('Deadline: ' + fmtLong(fDeadline));
+        const description = parts.length ? parts.join(' · ') : fContext;
+
+        const update = seedUpdate({
+          projectId: pid, taskId: null, type, description, actionRequired: false, priority: 'Medium',
+          newDeadline: fDeadline, addedBy: 'Aida', createdDate: fmtISO(DEMO_TODAY)
+        });
+        if (fDecision) {
+          seedDecision({ updateId: update.id, projectId: pid, decision: fDecision, why: info.why || '', decidedBy: 'Aida', impact: '', createdDate: fmtISO(DEMO_TODAY) });
+        }
+        if (fContext) {
+          seedContext({ projectId: pid, text: fContext, addedBy: 'Aida', createdDate: fmtISO(DEMO_TODAY) });
+        }
+        if (fCriticality === 'Critical') {
+          DB.tasks.filter(t => t.projectId === pid && t.status !== 'Completed').forEach(t => { t.criticality = 'Critical'; });
+        }
+        if (fTrigger && fAction) {
+          seedContingency({ projectId: pid, trigger: fTrigger, action: fAction, contact: cover, resource: '', addedBy: 'Aida', createdDate: fmtISO(DEMO_TODAY) });
+        }
+        closeVoiceModal();
+        showToast('Handover captured');
+        renderProjectMiniList();
+        if (!document.getElementById('tab-cover').classList.contains('hidden')) renderCoverTab();
+      });
+
+    } else { // mode === 'update'
+      const task = DB.tasks.find(x => x.id === voiceContext.taskId);
+      const guessedType = info.isDecision ? 'Decision' : ((info.waitingOn && !info.noActionNeeded) ? 'Risk' : 'Update');
+      const desc = composeUpdateDescription(info, transcript);
+      voiceSheet.innerHTML = `
+        <h3>✨ I understood</h3>
+        <span class="voice-transcript-toggle" id="voiceTranscriptToggle">View / edit transcript</span>
+        <div class="voice-transcript-box" id="voiceTranscriptBox">
+          <textarea id="voiceTranscriptEdit">${escapeHtml(transcript)}</textarea>
+          <button class="voice-btn" id="voiceReparseBtn" style="margin-top:8px;">Re-parse</button>
+        </div>
+        <div class="voice-review-field"><label>Type</label>
+          <select id="vf-type">
+            <option value="Update" ${guessedType === 'Update' ? 'selected' : ''}>Update</option>
+            <option value="Decision" ${guessedType === 'Decision' ? 'selected' : ''}>Decision</option>
+            <option value="Action" ${guessedType === 'Action' ? 'selected' : ''}>Action</option>
+            <option value="Risk" ${guessedType === 'Risk' ? 'selected' : ''}>Risk</option>
+          </select>
+        </div>
+        <div class="voice-review-field"><label>Update</label><textarea id="vf-desc">${escapeHtml(desc)}</textarea></div>
+        <div class="voice-review-field"><label>Action for returning colleague?</label>
+          <div class="yn-toggle"><button type="button" class="vf-yn" data-val="No" id="vfYnNo">No</button><button type="button" class="vf-yn" data-val="Yes" id="vfYnYes">Yes</button></div>
+        </div>
+        <div class="voice-review-field" id="vfDecisionWrap" style="${guessedType === 'Decision' ? '' : 'display:none;'}">
+          <label>Decision</label><textarea id="vf-decision">${escapeHtml(info.decision || '')}</textarea>
+          <label style="margin-top:8px;">Why</label><textarea id="vf-why">${escapeHtml(info.why || '')}</textarea>
+          <label style="margin-top:8px;">New deadline</label><input type="date" id="vf-newdeadline" value="${info.date || ''}">
+        </div>
+        <div class="voice-review-field"><label>Added by</label><input value="${escapeAttr(coverForProject(task.projectId))}" disabled></div>
+        <div class="voice-review-field"><label>Created date</label><input value="${fmtLong(fmtISO(DEMO_TODAY))}" disabled></div>
+        ${info.resourceMention ? `<div class="voice-resource-chip">📎 Resource mentioned: <strong>${escapeHtml(info.resourceMention)}</strong><button class="vrc-btn" id="voiceAddLinkBtn">+ Add link</button></div>` : ''}
+        <div class="voice-actions">
+          <button class="vbtn-edit" id="voiceEditBtn">Edit</button>
+          <button class="vbtn-save" id="voiceSaveBtn">Confirm &amp; Save</button>
+        </div>
+      `;
+      wireTranscriptToggle(transcript);
+      document.getElementById(info.noActionNeeded ? 'vfYnNo' : 'vfYnYes').classList.add('selected');
+      document.querySelectorAll('.vf-yn').forEach(b => b.addEventListener('click', () => {
+        document.querySelectorAll('.vf-yn').forEach(x => x.classList.remove('selected'));
+        b.classList.add('selected');
+      }));
+      document.getElementById('vf-type').addEventListener('change', (e) => {
+        document.getElementById('vfDecisionWrap').style.display = e.target.value === 'Decision' ? '' : 'none';
+      });
+      if (info.resourceMention) {
+        document.getElementById('voiceAddLinkBtn').addEventListener('click', () => {
+          const mention = info.resourceMention;
+          closeVoiceModal();
+          openResourcePanels.add(task.id);
+          openTaskLinkForms.add(task.id);
+          renderCoverTab();
+          setTimeout(() => {
+            const inp = document.querySelector('#task-link-form-' + task.id + ' .trf-title');
+            if (inp) inp.value = mention;
+            document.getElementById('task-link-form-' + task.id)?.scrollIntoView({ behavior: 'smooth', block: 'center' });
+          }, 30);
+        });
+      }
+      document.getElementById('voiceSaveBtn').addEventListener('click', () => {
+        const type = document.getElementById('vf-type').value;
+        const description = document.getElementById('vf-desc').value.trim();
+        if (!description) { showToast('Add a short description first'); return; }
+        const ynSelected = document.querySelector('.vf-yn.selected');
+        const actionRequired = ynSelected ? ynSelected.dataset.val === 'Yes' : true;
+        const newDeadline = type === 'Decision' ? (document.getElementById('vf-newdeadline').value || null) : null;
+
+        const update = seedUpdate({
+          projectId: task.projectId, taskId: task.id, type, description, actionRequired, priority: 'Medium',
+          newDeadline, addedBy: coverForProject(task.projectId), createdDate: fmtISO(DEMO_TODAY)
+        });
+        if (type === 'Decision') {
+          const decision = document.getElementById('vf-decision').value.trim() || description;
+          const why = document.getElementById('vf-why').value.trim();
+          seedDecision({ updateId: update.id, projectId: task.projectId, decision, why, decidedBy: update.addedBy, impact: '', createdDate: fmtISO(DEMO_TODAY) });
+        }
+        if (newDeadline) task.deadline = newDeadline;
+        closeVoiceModal();
+        showToast('Update saved');
+        renderCoverTab();
+      });
+    }
+  }
+
+  function attachDictationMic(btn, textarea) {
+    if (!textarea) return;
+    let rec = null, recording = false;
+    function reallyStart() {
+      const SR = getSR();
+      rec = new SR();
+      rec.lang = navigator.language || 'en-US';
+      rec.continuous = true;
+      rec.interimResults = false;
+      rec.onresult = (e) => {
+        let text = '';
+        for (let i = e.resultIndex; i < e.results.length; i++) if (e.results[i].isFinal) text += e.results[i][0].transcript + ' ';
+        if (text.trim()) textarea.value = (textarea.value ? textarea.value.trim() + ' ' : '') + text.trim();
+      };
+      rec.onerror = () => { recording = false; btn.classList.remove('recording'); };
+      rec.onend = () => { recording = false; btn.classList.remove('recording'); };
+      rec.start();
+      recording = true;
+      btn.classList.add('recording');
+    }
+    btn.addEventListener('click', () => {
+      const SR = getSR();
+      if (!SR) { showToast('Voice input not supported in this browser'); return; }
+      if (recording) { if (rec) { try { rec.stop(); } catch (e) {} } return; }
+      if (!voiceConsentGiven) {
+        openGenericSheet(`
+          <h3>🎙️ Before you speak</h3>
+          <div class="voice-consent">
+            This uses your <strong>browser's built-in speech recognition</strong> (the Web Speech API). Your browser sends the audio to its own speech-to-text provider to transcribe it — this prototype does not record or store your voice anywhere else.
+          </div>
+          <div class="voice-actions">
+            <button class="vbtn-edit" id="dictConsentCancelBtn">Cancel</button>
+            <button class="vbtn-save" id="dictConsentStartBtn">🎙️ Start listening</button>
+          </div>
+        `);
+        document.getElementById('dictConsentCancelBtn').addEventListener('click', closeVoiceModal);
+        document.getElementById('dictConsentStartBtn').addEventListener('click', () => {
+          voiceConsentGiven = true;
+          closeVoiceModal();
+          reallyStart();
+        });
+        return;
+      }
+      reallyStart();
+    });
+  }
+
+  document.getElementById('globalSpeakBtn').addEventListener('click', () => {
+    openVoiceModal({ mode: 'full', projectId: null });
+  });
+
+})();
+</script>
+</body>
+</html>
+
+</body></html>
