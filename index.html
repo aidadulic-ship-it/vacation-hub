@@ -628,6 +628,10 @@
       <div id="backupStatusPanel"></div>
       <button class="primary-btn" id="saveCoverBtn">Save cover assignment</button>
       <p class="cover-confirm" id="coverConfirm">Saved — Maria Keller is covering for you.</p>
+      <!-- Manual calendar export: real download, no calendar account access. -->
+      <button type="button" class="voice-btn block" id="calendarExportBtn" style="margin-top:12px;">📅 Export to Outlook (.ics)</button>
+      <p class="form-hint" style="margin:8px 0 0;">REAL FILE DOWNLOAD · Confirm dates first, then import into Outlook manually. No automatic sync or messages.</p>
+
     </div>
 
     <div class="form-card">
@@ -2777,6 +2781,75 @@
       reallyStart();
     });
   }
+
+  // Real, manual calendar download. No account access, messages or model changes.
+  function calendarDate(value) {
+    if (!/^\d{4}-\d{2}-\d{2}$/.test(value)) return null;
+    const date = new Date(value + 'T00:00:00Z');
+    return Number.isFinite(date.getTime()) && date.toISOString().slice(0, 10) === value ? date : null;
+  }
+  function calendarEscape(value) {
+    return value.replace(/\\/g, '\\\\').replace(/\r\n|\r|\n/g, '\\n').replace(/;/g, '\\;').replace(/,/g, '\\,');
+  }
+  function calendarFold(line) {
+    const encoder = new TextEncoder();
+    let current = '', bytes = 0;
+    const lines = [];
+    for (const char of line) {
+      const size = encoder.encode(char).length;
+      if (bytes + size > 75) { lines.push(current); current = ' '; bytes = 1; }
+      current += char; bytes += size;
+    }
+    lines.push(current);
+    return lines.join('\r\n');
+  }
+  function buildLeaveCalendar(start, end, title) {
+    const first = calendarDate(start), last = calendarDate(end);
+    if (!first || !last || last < first || !title.trim()) throw new Error('Check the title and dates. End date must be on or after start date.');
+    last.setUTCDate(last.getUTCDate() + 1); // iCalendar DTEND is exclusive.
+    if (last.getUTCFullYear() > 9999) throw new Error('End date is outside the supported range.');
+    const uid = window.crypto?.randomUUID ? window.crypto.randomUUID() : String(Date.now()) + '-' + Math.random().toString(16).slice(2);
+    return [
+      'BEGIN:VCALENDAR', 'VERSION:2.0', 'PRODID:-//Vacation Hub//Manual Leave Export//EN', 'CALSCALE:GREGORIAN',
+      'BEGIN:VEVENT', 'UID:' + uid + '@vacation-hub.local', 'DTSTAMP:20261008T090000Z',
+      'DTSTART;VALUE=DATE:' + start.replace(/-/g, ''),
+      'DTEND;VALUE=DATE:' + last.toISOString().slice(0, 10).replace(/-/g, ''),
+      'SUMMARY:' + calendarEscape(title.trim()),
+      'DESCRIPTION:Vacation Hub demo. User-confirmed manual export. No calendar sync or invitations.',
+      'TRANSP:TRANSPARENT', 'CLASS:PRIVATE', 'END:VEVENT', 'END:VCALENDAR'
+    ].map(calendarFold).join('\r\n') + '\r\n';
+  }
+  document.getElementById('calendarExportBtn').addEventListener('click', () => {
+    const start = document.getElementById('coverStart').value;
+    const end = document.getElementById('coverEnd').value;
+    openGenericSheet(`
+      <h3>Export to Outlook</h3>
+      <p class="voice-sub">Review and confirm these demo dates before downloading. This is a real file download — all handover workflows remain SIMULATED.</p>
+      <div class="voice-review-field"><label for="calendarTitle">Calendar title</label><input id="calendarTitle" value="[DEMO] Vacation Hub — leave"></div>
+      <div class="voice-review-field"><label for="calendarStart">First day of leave</label><input type="date" id="calendarStart" value="${escapeAttr(start)}"></div>
+      <div class="voice-review-field"><label for="calendarEnd">Last day of leave (included)</label><input type="date" id="calendarEnd" value="${escapeAttr(end)}"></div>
+      <p class="voice-sub">One all-day event, including the last day. It is shown as Free so this test does not block your calendar. No attendees, invitations or reminders. These fields only affect the downloaded file.</p>
+      <p id="calendarError" role="alert" style="color:var(--danger);"></p>
+      <div class="voice-actions"><button class="vbtn-edit" id="calendarCancelBtn">Cancel</button><button class="vbtn-save" id="calendarDownloadBtn">Confirm &amp; download .ics</button></div>
+    `);
+    document.getElementById('calendarCancelBtn').addEventListener('click', closeVoiceModal);
+    document.getElementById('calendarDownloadBtn').addEventListener('click', () => {
+      const first = document.getElementById('calendarStart').value;
+      const last = document.getElementById('calendarEnd').value;
+      const title = document.getElementById('calendarTitle').value;
+      try {
+        const text = buildLeaveCalendar(first, last, title);
+        const url = URL.createObjectURL(new Blob([text], { type: 'text/calendar;charset=utf-8' }));
+        const link = document.createElement('a');
+        link.href = url; link.download = 'vacation-hub-' + first + '.ics';
+        document.body.appendChild(link); link.click(); link.remove();
+        setTimeout(() => URL.revokeObjectURL(url), 30000);
+        closeVoiceModal(); showToast('Calendar file downloaded — import into Outlook');
+      } catch (error) {
+        document.getElementById('calendarError').textContent = error.message;
+      }
+    });
+  });
 
   document.getElementById('globalSpeakBtn').addEventListener('click', () => {
     openVoiceModal({ mode: 'full', projectId: null });
